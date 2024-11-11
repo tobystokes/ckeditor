@@ -240,7 +240,6 @@ export default class CraftEntriesUI extends Plugin {
 
     const slideout = Craft.createElementEditor(this.elementType, null, {
       elementId: entryId,
-      ownerId: elementEditor.settings.elementId,
       params: {
         siteId: siteId,
       },
@@ -250,21 +249,25 @@ export default class CraftEntriesUI extends Plugin {
         // then ensure we're working with a draft and save the nested entry changes to the draft
         if (
           $element !== null &&
-          $element.data('primary-owner-id') ==
-            elementEditor.settings.canonicalId
+          $element.data('primary-owner-id') === $element.data('owner-id')
         ) {
+          await slideout.elementEditor.checkForm(true, true);
           let baseInputName = $(editor.sourceElement).attr('name');
+          // mark as dirty
           if (elementEditor && baseInputName) {
             await elementEditor.setFormValue(baseInputName, '*');
           }
-          if (elementEditor.settings.draftId) {
+          if (
+            elementEditor.settings.draftId &&
+            slideout.elementEditor.settings.draftId
+          ) {
             if (!slideout.elementEditor.settings.saveParams) {
               slideout.elementEditor.settings.saveParams = {};
             }
             slideout.elementEditor.settings.saveParams.action =
-              'elements/save-nested-element-for-draft';
-            slideout.elementEditor.settings.saveParams.ownerId =
-              elementEditor.settings.elementId;
+              'elements/save-nested-element-for-derivative';
+            slideout.elementEditor.settings.saveParams.newOwnerId =
+              elementEditor.getDraftElementId($element.data('owner-id'));
           }
         }
       },

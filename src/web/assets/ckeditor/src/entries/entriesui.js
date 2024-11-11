@@ -249,7 +249,7 @@ export default class CraftEntriesUI extends Plugin {
         // then ensure we're working with a draft and save the nested entry changes to the draft
         if (
           $element !== null &&
-          $element.data('primary-owner-id') === $element.data('owner-id') &&
+          Garnish.hasAttr($element, 'data-owner-is-canonical') &&
           !elementEditor.settings.isUnpublishedDraft
         ) {
           await slideout.elementEditor.checkForm(true, true);

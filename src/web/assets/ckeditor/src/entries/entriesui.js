@@ -249,7 +249,8 @@ export default class CraftEntriesUI extends Plugin {
         // then ensure we're working with a draft and save the nested entry changes to the draft
         if (
           $element !== null &&
-          $element.data('primary-owner-id') === $element.data('owner-id')
+          $element.data('primary-owner-id') === $element.data('owner-id') &&
+          !elementEditor.settings.isUnpublishedDraft
         ) {
           await slideout.elementEditor.checkForm(true, true);
           let baseInputName = $(editor.sourceElement).attr('name');

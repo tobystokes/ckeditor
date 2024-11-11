@@ -1,5 +1,9 @@
 # Release Notes for CKEditor for Craft CMS
 
+## Unreleased
+
+- When saving a nested entry within a CKEditor field, the changes are now saved to a draft of the owner element, rather than published immediately. ([craftcms/cms#16002](https://github.com/craftcms/cms/pull/16002), [#308](https://github.com/craftcms/ckeditor/pull/308))
+
 ## 4.3.1 - 2024-10-20
 
 - Fixed a bug where sticky toolbars weren’t positioned correctly.

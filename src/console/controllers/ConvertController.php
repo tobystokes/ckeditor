@@ -7,7 +7,6 @@
 
 namespace craft\ckeditor\console\controllers;
 
-use Composer\Util\Platform;
 use Craft;
 use craft\ckeditor\CkeConfig;
 use craft\ckeditor\CkeConfigs;

@@ -2,6 +2,7 @@
 
 return [
     'Advanced' => 'Advanced',
+    'Available User Groups' => 'Available User Groups',
     'Available Transforms' => 'Available Transforms',
     'CKEditor Config' => 'CKEditor Config',
     'CKEditor Configs' => 'CKEditor Configs',
@@ -38,6 +39,7 @@ return [
     'The default transform that should be applied when inserting an image.' => 'The default transform that should be applied when inserting an image.',
     'The transforms that should be available when inserting images.' => 'The transforms that should be available when inserting images.',
     'The type of column this field should get in the database.' => 'The type of column this field should get in the database.',
+    'The user groups whose members should see the “Source” button even if they’re not admins.' => 'The user groups whose members should see the “Source” button even if they’re not admins.',
     'Toolbar' => 'Toolbar',
     'View available settings' => 'View available settings',
     'Word Limit' => 'Word Limit',

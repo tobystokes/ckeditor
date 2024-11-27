@@ -16,6 +16,7 @@ use craft\ckeditor\web\assets\ckeditor\CkeditorAsset;
 use craft\elements\Asset;
 use craft\elements\Category;
 use craft\elements\Entry;
+use craft\elements\User;
 use craft\errors\InvalidHtmlTagException;
 use craft\helpers\ArrayHelper;
 use craft\helpers\Html;
@@ -147,6 +148,13 @@ class Field extends HtmlField
     public bool $enableSourceEditingForNonAdmins = false;
 
     /**
+     * @var string|array|null User groups whose members should be able to edit the source even if they're not admin users
+     * if the $enableSourceEditingForNonAdmins is on.
+     * @since 3.11.0
+     */
+    public string|array|null $sourceEditingGroups = '*';
+
+    /**
      * @var bool Whether to show volumes the user doesn’t have permission to view.
      * @since 1.2.0
      */
@@ -234,6 +242,16 @@ class Field extends HtmlField
     {
         $view = Craft::$app->getView();
 
+        $userGroupOptions = [];
+        foreach (Craft::$app->getUserGroups()->getAllGroups() as $group) {
+            if ($group->can('accessCp')) {
+                $userGroupOptions[] = [
+                    'label' => $group->name,
+                    'value' => $group->uid,
+                ];
+            }
+        }
+
         $volumeOptions = [];
         foreach (Craft::$app->getVolumes()->getAllVolumes() as $volume) {
             if ($volume->getFs()->hasUrls) {
@@ -254,6 +272,7 @@ class Field extends HtmlField
 
         return $view->renderTemplate('ckeditor/_field-settings.twig', [
             'field' => $this,
+            'userGroupOptions' => $userGroupOptions,
             'purifierConfigOptions' => $this->configOptions('htmlpurifier'),
             'volumeOptions' => $volumeOptions,
             'transformOptions' => $transformOptions,
@@ -303,7 +322,7 @@ class Field extends HtmlField
         // Toolbar cleanup
         $toolbar = array_merge($ckeConfig->toolbar);
 
-        if (!$this->enableSourceEditingForNonAdmins && !Craft::$app->getUser()->getIsAdmin()) {
+        if (!$this->isSourceEditingAllowed(Craft::$app->getUser()->getIdentity())) {
             ArrayHelper::removeValue($toolbar, 'sourceEditing');
         }
 
@@ -547,6 +566,35 @@ JS,
         }
 
         return parent::prepValueForInput($value, $element);
+    }
+
+    /**
+     * Returns if user belongs to a group whose members are allowed to edit source even if they're not admins
+     * @param User $user
+     * @return bool
+     */
+    private function isSourceEditingAllowed(User $user): bool
+    {
+        if ($user->admin) {
+            return true;
+        }
+        
+        if (!$this->enableSourceEditingForNonAdmins) {
+            return false;
+        }
+
+        $allowedGroups = $this->sourceEditingGroups;
+        if ($allowedGroups === '*') {
+            return true;
+        }
+
+        if (is_string($allowedGroups)) {
+            $allowedGroups = [$allowedGroups];
+        }
+
+        $userGroups = array_keys(Collection::make($user->getGroups())->keyBy('uid')->all());
+
+        return !empty(array_intersect($allowedGroups, $userGroups));
     }
 
     /**

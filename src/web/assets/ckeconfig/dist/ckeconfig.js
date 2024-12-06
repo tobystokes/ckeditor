@@ -1,3 +1,1171 @@
-/*! For license information please see ckeconfig.js.LICENSE.txt */
-(function(){var __webpack_modules__={150:function(__unused_webpack_module,__webpack_exports__,__webpack_require__){"use strict";var _ckeconfig_css__WEBPACK_IMPORTED_MODULE_0__=__webpack_require__(778),_ckeconfig_css__WEBPACK_IMPORTED_MODULE_0___default=__webpack_require__.n(_ckeconfig_css__WEBPACK_IMPORTED_MODULE_0__),jquery__WEBPACK_IMPORTED_MODULE_1__=__webpack_require__(311),jquery__WEBPACK_IMPORTED_MODULE_1___default=__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_1__);function _slicedToArray(e,t){return _arrayWithHoles(e)||_iterableToArrayLimit(e,t)||_unsupportedIterableToArray(e,t)||_nonIterableRest()}function _nonIterableRest(){throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.")}function _iterableToArrayLimit(e,t){var n=null==e?null:"undefined"!=typeof Symbol&&e[Symbol.iterator]||e["@@iterator"];if(null!=n){var r,o,i,a,s=[],u=!0,c=!1;try{if(i=(n=n.call(e)).next,0===t){if(Object(n)!==n)return;u=!1}else for(;!(u=(r=i.call(n)).done)&&(s.push(r.value),s.length!==t);u=!0);}catch(e){c=!0,o=e}finally{try{if(!u&&null!=n.return&&(a=n.return(),Object(a)!==a))return}finally{if(c)throw o}}return s}}function _arrayWithHoles(e){if(Array.isArray(e))return e}function _createForOfIteratorHelper(e,t){var n="undefined"!=typeof Symbol&&e[Symbol.iterator]||e["@@iterator"];if(!n){if(Array.isArray(e)||(n=_unsupportedIterableToArray(e))||t&&e&&"number"==typeof e.length){n&&(e=n);var r=0,o=function(){};return{s:o,n:function(){return r>=e.length?{done:!0}:{done:!1,value:e[r++]}},e:function(e){throw e},f:o}}throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.")}var i,a=!0,s=!1;return{s:function(){n=n.call(e)},n:function(){var e=n.next();return a=e.done,e},e:function(e){s=!0,i=e},f:function(){try{a||null==n.return||n.return()}finally{if(s)throw i}}}}function _unsupportedIterableToArray(e,t){if(e){if("string"==typeof e)return _arrayLikeToArray(e,t);var n=Object.prototype.toString.call(e).slice(8,-1);return"Object"===n&&e.constructor&&(n=e.constructor.name),"Map"===n||"Set"===n?Array.from(e):"Arguments"===n||/^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)?_arrayLikeToArray(e,t):void 0}}function _arrayLikeToArray(e,t){(null==t||t>e.length)&&(t=e.length);for(var n=0,r=new Array(t);n<t;n++)r[n]=e[n];return r}__webpack_exports__.Z=Garnish.Base.extend({jsonSchemaUri:null,language:null,$container:null,$jsonContainer:null,$jsContainer:null,jsonEditor:null,jsEditor:null,defaults:null,init:function init(id,jsonSchemaUri){var _this=this;this.jsonSchemaUri=jsonSchemaUri,this.$container=jquery__WEBPACK_IMPORTED_MODULE_1___default()("#".concat(id)),this.$jsonContainer=jquery__WEBPACK_IMPORTED_MODULE_1___default()("#".concat(id,"-json-container")),this.$jsContainer=jquery__WEBPACK_IMPORTED_MODULE_1___default()("#".concat(id,"-js-container")),this.jsonEditor=window.monacoEditorInstances["".concat(id,"-json")],this.jsEditor=window.monacoEditorInstances["".concat(id,"-js")];var $languagePicker=this.$container.children(".btngroup");this.$jsonContainer.hasClass("hidden")?this.language="js":this.language="json",this.defaults={};var lastJsValue=null;new Craft.Listbox($languagePicker,{onChange:function(e){switch(_this.language=e.data("language"),_this.language){case"json":if(lastJsValue=_this.jsEditor.getModel().getValue(),_this.jsContainsFunctions(lastJsValue)&&!confirm(Craft.t("ckeditor","Your JavaScript config contains functions. If you switch to JSON, they will be lost. Would you like to continue?"))){$languagePicker.data("listbox").$options.not('[data-language="json"]').trigger("click");break}_this.$jsonContainer.removeClass("hidden"),_this.$jsContainer.addClass("hidden");var t=_this.js2json(lastJsValue);lastJsValue=null,_this.jsonEditor.getModel().setValue(t||"{\n  \n}"),_this.jsEditor.getModel().setValue("");break;case"js":var n;_this.$jsonContainer.addClass("hidden"),_this.$jsContainer.removeClass("hidden"),null!==lastJsValue?(n=lastJsValue,lastJsValue=null):n=_this.json2js(_this.jsonEditor.getModel().getValue()),_this.jsEditor.getModel().setValue(n||"return {\n  \n}"),_this.jsonEditor.getModel().setValue("")}}}),this.jsonEditor.onDidPaste((function(ev){var pastedContent=_this.jsonEditor.getModel().getValueInRange(ev.range),config;try{eval("config = {".concat(pastedContent,"}"))}catch(e){return}var json=JSON.stringify(config,null,2),trimmed=Craft.trim(json.substring(1,json.length-1));trimmed&&_this.jsonEditor.executeEdits("",[{range:ev.range,text:trimmed}])}))},getConfig:function(){var e;if("json"===this.language)e=Craft.trim(this.jsonEditor.getModel().getValue())||"{}";else{var t=Craft.trim(this.jsEditor.getModel().getValue());if(!1===(e=t?this.js2json(t):"{}"))return!1}try{var n=JSON.parse(e);return!!jquery__WEBPACK_IMPORTED_MODULE_1___default().isPlainObject(n)&&n}catch(e){return!1}},setConfig:function(e){var t=this.config2json(e);if("json"===this.language)this.jsonEditor.getModel().setValue(t);else{var n=this.json2js(t);this.jsEditor.getModel().setValue(n||"return {\n  \n}")}},addSetting:function(e){var t=this.getConfig();t&&void 0===t[e]&&(void 0===this.defaults[e]&&(this.populateDefault(e),void 0===this.defaults[e])||(t[e]=this.defaults[e],this.setConfig(t)))},removeSetting:function(e){var t=this.getConfig();t&&void 0!==t[e]&&(this.defaults[e]=t[e],delete t[e],this.setConfig(t))},populateDefault:function(e){var t,n=this;try{t=window.monaco.languages.json.jsonDefaults.diagnosticsOptions.schemas.find((function(e){return e.uri===n.jsonSchemaUri})).schema}catch(e){return void console.warn("Couldn’t get config options JSON schema.",e)}if(t.$defs&&t.$defs.EditorConfig&&t.$defs.EditorConfig.properties){if(t.$defs.EditorConfig.properties[e]){var r=t.$defs.EditorConfig.properties[e];if(r.default)this.defaults[e]=r.default;else if(r.$ref){var o=r.$ref.match(/^#\/\$defs\/(\w+)/);if(o){var i=o[1];t.$defs[i]&&t.$defs[i].default&&(this.defaults[e]=t.$defs[i].default)}}}}else console.warn("Config options JSON schema is missing $defs.EditorConfig.properties")},replacer:function(e,t){return"function"==typeof t?"__HAS__FUNCTION__":t},jsContainsFunctions:function(e){var t=this.getValidJsonConfig(e);return!1===t||!!JSON.stringify(t,this.replacer,2).match(/__HAS__FUNCTION__/)},config2json:function(e){var t=JSON.stringify(e,null,2);return"{}"===t&&(t="{\n  \n}"),t},getValidJsonConfig:function getValidJsonConfig(js){var m=(js||"").match(/return\s*(\{[\w\W]*})/),config;if(!m)return!1;try{eval("config = ".concat(m[1],";"))}catch(e){return!1}return config},js2json:function(e){var t=this.getValidJsonConfig(e);return!1!==t&&this.config2json(t)},json2js:function(e){var t;try{t=JSON.parse(e)}catch(e){return!1}if(!jquery__WEBPACK_IMPORTED_MODULE_1___default().isPlainObject(t))return!1;var n=this.jsify(t,"");return"{\n}"===n&&(n="{\n  \n}"),"return ".concat(n)},jsify:function(e,t){var n;if(jquery__WEBPACK_IMPORTED_MODULE_1___default().isArray(e)){n="[\n";var r,o=_createForOfIteratorHelper(e);try{for(o.s();!(r=o.n()).done;){var i=r.value;n+="".concat(t,"  ").concat(this.jsify(i,t+"  "),",\n")}}catch(e){o.e(e)}finally{o.f()}n+="".concat(t,"]")}else if(jquery__WEBPACK_IMPORTED_MODULE_1___default().isPlainObject(e)){n="{\n";for(var a=0,s=Object.entries(e);a<s.length;a++){var u=_slicedToArray(s[a],2),c=u[0],l=u[1];n+="".concat(t,"  ").concat(c,": ").concat(this.jsify(l,t+"  "),",\n")}n+="".concat(t,"}")}else n="string"!=typeof e||e.match(/[\r\n']/)?JSON.stringify(e):"'".concat(e,"'");return n}})},880:function(){},778:function(e,t,n){var r=n(880);r.__esModule&&(r=r.default),"string"==typeof r&&(r=[[e.id,r,""]]),r.locals&&(e.exports=r.locals),(0,n(673).Z)("4690113c",r,!0,{})},673:function(e,t,n){"use strict";function r(e,t){for(var n=[],r={},o=0;o<t.length;o++){var i=t[o],a=i[0],s={id:e+":"+o,css:i[1],media:i[2],sourceMap:i[3]};r[a]?r[a].parts.push(s):n.push(r[a]={id:a,parts:[s]})}return n}n.d(t,{Z:function(){return p}});var o="undefined"!=typeof document;if("undefined"!=typeof DEBUG&&DEBUG&&!o)throw new Error("vue-style-loader cannot be used in a non-browser environment. Use { target: 'node' } in your Webpack config to indicate a server-rendering environment.");var i={},a=o&&(document.head||document.getElementsByTagName("head")[0]),s=null,u=0,c=!1,l=function(){},d=null,f="data-vue-ssr-id",_="undefined"!=typeof navigator&&/msie [6-9]\b/.test(navigator.userAgent.toLowerCase());function p(e,t,n,o){c=n,d=o||{};var a=r(e,t);return h(a),function(t){for(var n=[],o=0;o<a.length;o++){var s=a[o];(u=i[s.id]).refs--,n.push(u)}for(t?h(a=r(e,t)):a=[],o=0;o<n.length;o++){var u;if(0===(u=n[o]).refs){for(var c=0;c<u.parts.length;c++)u.parts[c]();delete i[u.id]}}}}function h(e){for(var t=0;t<e.length;t++){var n=e[t],r=i[n.id];if(r){r.refs++;for(var o=0;o<r.parts.length;o++)r.parts[o](n.parts[o]);for(;o<n.parts.length;o++)r.parts.push(m(n.parts[o]));r.parts.length>n.parts.length&&(r.parts.length=n.parts.length)}else{var a=[];for(o=0;o<n.parts.length;o++)a.push(m(n.parts[o]));i[n.id]={id:n.id,refs:1,parts:a}}}}function g(){var e=document.createElement("style");return e.type="text/css",a.appendChild(e),e}function m(e){var t,n,r=document.querySelector("style["+f+'~="'+e.id+'"]');if(r){if(c)return l;r.parentNode.removeChild(r)}if(_){var o=u++;r=s||(s=g()),t=b.bind(null,r,o,!1),n=b.bind(null,r,o,!0)}else r=g(),t=C.bind(null,r),n=function(){r.parentNode.removeChild(r)};return t(e),function(r){if(r){if(r.css===e.css&&r.media===e.media&&r.sourceMap===e.sourceMap)return;t(e=r)}else n()}}var v,y=(v=[],function(e,t){return v[e]=t,v.filter(Boolean).join("\n")});function b(e,t,n,r){var o=n?"":r.css;if(e.styleSheet)e.styleSheet.cssText=y(t,o);else{var i=document.createTextNode(o),a=e.childNodes;a[t]&&e.removeChild(a[t]),a.length?e.insertBefore(i,a[t]):e.appendChild(i)}}function C(e,t){var n=t.css,r=t.media,o=t.sourceMap;if(r&&e.setAttribute("media",r),d.ssrId&&e.setAttribute(f,t.id),o&&(n+="\n/*# sourceURL="+o.sources[0]+" */",n+="\n/*# sourceMappingURL=data:application/json;base64,"+btoa(unescape(encodeURIComponent(JSON.stringify(o))))+" */"),e.styleSheet)e.styleSheet.cssText=n;else{for(;e.firstChild;)e.removeChild(e.firstChild);e.appendChild(document.createTextNode(n))}}},311:function(e){"use strict";e.exports=jQuery}},__webpack_module_cache__={};function __webpack_require__(e){var t=__webpack_module_cache__[e];if(void 0!==t)return t.exports;var n=__webpack_module_cache__[e]={id:e,exports:{}};return __webpack_modules__[e](n,n.exports,__webpack_require__),n.exports}__webpack_require__.n=function(e){var t=e&&e.__esModule?function(){return e.default}:function(){return e};return __webpack_require__.d(t,{a:t}),t},__webpack_require__.d=function(e,t){for(var n in t)__webpack_require__.o(t,n)&&!__webpack_require__.o(e,n)&&Object.defineProperty(e,n,{enumerable:!0,get:t[n]})},__webpack_require__.o=function(e,t){return Object.prototype.hasOwnProperty.call(e,t)};var __webpack_exports__={};!function(){"use strict";__webpack_require__(778);var e=__webpack_require__(311),t=__webpack_require__.n(e);function n(e){return n="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e},n(e)}function r(e){return function(e){if(Array.isArray(e))return a(e)}(e)||function(e){if("undefined"!=typeof Symbol&&null!=e[Symbol.iterator]||null!=e["@@iterator"])return Array.from(e)}(e)||i(e)||function(){throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.")}()}function o(e,t){var n="undefined"!=typeof Symbol&&e[Symbol.iterator]||e["@@iterator"];if(!n){if(Array.isArray(e)||(n=i(e))||t&&e&&"number"==typeof e.length){n&&(e=n);var r=0,o=function(){};return{s:o,n:function(){return r>=e.length?{done:!0}:{done:!1,value:e[r++]}},e:function(e){throw e},f:o}}throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.")}var a,s=!0,u=!1;return{s:function(){n=n.call(e)},n:function(){var e=n.next();return s=e.done,e},e:function(e){u=!0,a=e},f:function(){try{s||null==n.return||n.return()}finally{if(u)throw a}}}}function i(e,t){if(e){if("string"==typeof e)return a(e,t);var n=Object.prototype.toString.call(e).slice(8,-1);return"Object"===n&&e.constructor&&(n=e.constructor.name),"Map"===n||"Set"===n?Array.from(e):"Arguments"===n||/^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)?a(e,t):void 0}}function a(e,t){(null==t||t>e.length)&&(t=e.length);for(var n=0,r=new Array(t);n<t;n++)r[n]=e[n];return r}function s(e,t,r){return(t=function(e){var t=function(e,t){if("object"!==n(e)||null===e)return e;var r=e[Symbol.toPrimitive];if(void 0!==r){var o=r.call(e,"string");if("object"!==n(o))return o;throw new TypeError("@@toPrimitive must return a primitive value.")}return String(e)}(e);return"symbol"===n(t)?t:String(t)}(t))in e?Object.defineProperty(e,t,{value:r,enumerable:!0,configurable:!0,writable:!0}):e[t]=r,e}var u=Garnish.Base.extend({$sourceContainer:null,$targetContainer:null,$input:null,value:null,components:null,drag:null,$items:null,draggingSourceItem:null,draggingSeparator:null,$insertion:null,showingInsertion:!1,closestItem:null,init:function(e,n,i,a){var u=this;this.$sourceContainer=t()("#".concat(e," .ckeditor-tb--source .ck-toolbar__items")),this.$targetContainer=t()("#".concat(e," .ckeditor-tb--target .ck-toolbar__items")),this.$input=t()("#".concat(e," input")),this.value=JSON.parse(this.$input.val());var c=document.createElement("DIV"),l=document.createElement("DIV");c.appendChild(l),CKEditor5.craftcms.create(l,{linkOptions:[{elementType:"craft\\elements\\Asset"}],assetSources:["*"],entryTypeOptions:[{label:"fake",value:"fake"}]}).then((function(e){var n=e.ui.componentFactory,a=Array.from(n.names());u.components={};for(var c=0,l=a;c<l.length;c++){var d=l[c];u.components[d]=n.create(d)}for(var f=CKEditor5.craftcms.toolbarItems,_=function(e){var t=f[e];if(t.length>1){var n=u.value.findIndex((function(e){return t.some((function(t){return t.button===e}))}));if(-1!==n)for(var o=0;o<t.length;o++)if(u.value[n+o]!==t[o].button){f.splice.apply(f,[e,1].concat(r(t.map((function(e){return[e]}))))),e+=t.length-1;break}}p=e},p=0;p<f.length;p++)_(p);u.drag=new Garnish.DragDrop({dropTargets:u.$targetContainer,helper:function(e){var n=t()('<div class="offset-drag-helper ck ck-reset_all ck-editor ck-rounded-corners"/>'),r=t()('<div class="ck ck-toolbar"/>').appendTo(n);return e.appendTo(r),n},moveHelperToCursor:!0,onDragStart:function(){Garnish.$bod.addClass("dragging");var e=u.drag.$draggee;if(u.draggingSourceItem=t().contains(u.$sourceContainer[0],e[0]),u.draggingSeparator=e.hasClass("ckeditor-tb--separator"),u.$insertion=t()('<div class="ckeditor-tb--insertion"/>').css({width:e.outerWidth()}),u.draggingSourceItem)if(u.draggingSeparator)e.css("visibility","");else{var n="ltr"===Craft.orientation?"margin-right":"margin-left",r=-1*e.outerWidth();e.stop().velocity(s({},n,r),200,(function(){e.addClass("hidden")}))}else e.addClass("hidden"),u.$insertion.insertBefore(e),u.showingInsertion=!0;u.setMidpoints()},onDrag:function(){u.checkForNewClosestItem()},onDragStop:function(){Garnish.$bod.removeClass("dragging");var e=u.drag.$draggee;if(u.checkForNewClosestItem(),u.showingInsertion)if(u.draggingSourceItem){var n;if(u.draggingSeparator)n=u.renderSeparator();else{var a=e.data("componentNames");n=u.renderComponentGroup(a);var c,l=o(a);try{var d=function(){var e=c.value,t=f.flat().find((function(t){return t.button===e}));t&&t.configOption&&i.addSetting(t.configOption)};for(l.s();!(c=l.n()).done;)d()}catch(e){l.e(e)}finally{l.f()}}n.data("sourceItem",e[0]),n.css("visibility","hidden"),u.$insertion.replaceWith(n),u.drag.$draggee=n}else u.$insertion.replaceWith(e),e.removeClass("hidden");else{if(!u.draggingSourceItem){var _=t()(e.data("sourceItem"));if(e.remove(),u.drag.$draggee=e=_,!u.draggingSeparator){var p,h=o(_.data("componentNames"));try{var g=function(){var e=p.value,t=f.flat().find((function(t){return t.button===e}));t&&t.configOption&&i.removeSetting(t.configOption)};for(h.s();!(p=h.n()).done;)g()}catch(e){h.e(e)}finally{h.f()}}}if(!u.draggingSeparator){e.removeClass("hidden");var m="ltr"===Craft.orientation?"margin-right":"margin-left",v=e.css(m);e.css(m,"");var y=e.css(m);e.css(m,v),e.stop().velocity(s({},m,y),200,(function(){e.css(m,"")}))}}u.drag.returnHelpersToDraggees(),u.$items=u.$targetContainer.children(),u.value=[];var b,C=o(u.$items.toArray());try{for(C.s();!(b=C.n()).done;){var j,w=b.value,E=t()(w);E.hasClass("ckeditor-tb--separator")?u.value.push("|"):(j=u.value).push.apply(j,r(E.data("componentNames")))}}catch(e){C.e(e)}finally{C.f()}u.$input.val(JSON.stringify(u.value))}});var h,g={},m=o(f);try{for(m.s();!(h=m.n()).done;){var v=h.value,y=u.renderComponentGroup(v);y&&(y.appendTo(u.$sourceContainer),g[v.map((function(e){return e.button})).join(",")]=y[0],u.value.includes(v[0].button)&&y.addClass("hidden"))}}catch(e){m.e(e)}finally{m.f()}g["|"]=u.renderSeparator().appendTo(u.$sourceContainer)[0],u.$items=t()();for(var b=function(e){var t,n,r=u.value[e];if("|"===r)t=u.renderSeparator().appendTo(u.$targetContainer),n="|";else{var o=f.find((function(e){return e.some((function(e){return e.button===r}))}));if(!o)return C=e,0;if(!(t=u.renderComponentGroup(o)))return C=e,0;t.appendTo(u.$targetContainer),n=o.map((function(e){return e.button})).join(","),e+=o.length-1}t.data("sourceItem",g[n]),u.$items=u.$items.add(t),C=e},C=0;C<u.value.length;C++)b(C)}))},renderSeparator:function(){var e=t()('<div class="ckeditor-tb--item ckeditor-tb--separator" data-cke-tooltip-text="Separator"><span class="ck ck-toolbar__separator"/></div>');return this.drag.addItems(e),e},renderComponentGroup:function(e){var n,r=[],i=[],a=o(e=e.map((function(e){return"string"==typeof e?e:e.button})));try{for(a.s();!(n=a.n()).done;){var s=n.value,u=void 0;try{u=this.renderComponent(s)}catch(e){console.warn(e);continue}r.push(u);var c=(u.is("[data-cke-tooltip-text]")?u:u.find("[data-cke-tooltip-text]")).attr("data-cke-tooltip-text");i.push(c?c.replace(/ \(.*\)$/,""):"".concat(s[0].toUpperCase()).concat(s.slice(1)))}}catch(e){a.e(e)}finally{a.f()}if(!r.length)return!1;var l=t()('<div class="ckeditor-tb--item"/>').append(r);return l.attr("data-cke-tooltip-text",i.join(", ")),l.data("componentNames",e),this.drag.addItems(l),l},renderComponent:function(e){var n=this.components[e];if(!n)throw"Missing component: ".concat(e);n.isRendered||n.render();var r=t()(n.element.outerHTML);return r.data("componentName",e),r},getClosestItem:function(){var e=this;if(!Garnish.hitTest(this.drag.mouseX,this.drag.mouseY,this.$targetContainer))return!1;if(!this.$items.length)return null;var n=this.$items.toArray();this.showingInsertion&&n.push(this.$insertion[0]);var o=n.map((function(n){var r=t().data(n,"midpoint");return Garnish.getDist(r.left,r.top,e.drag.mouseX,e.drag.mouseY)})),i=Math.min.apply(Math,r(o));return n[o.indexOf(i)]},checkForNewClosestItem:function(){var e=this.getClosestItem();!1!==e?e!==this.$insertion[0]&&(e?this.drag.mouseX<t().data(e,"midpoint").left?this.$insertion.insertBefore(e):this.$insertion.insertAfter(e):this.$insertion.appendTo(this.$targetContainer),this.showingInsertion=!0,this.setMidpoints()):this.showingInsertion&&(this.$insertion.remove(),this.showingInsertion=!1)},setMidpoints:function(){var e=this.$items.toArray();this.showingInsertion&&e.push(this.$insertion[0]);var n,r=o(e);try{for(r.s();!(n=r.n()).done;){var i=n.value,a=t()(i),s=a.offset(),u=s.left+a.outerWidth()/2,c=s.top+a.outerHeight()/2;a.data("midpoint",{left:u,top:c})}}catch(e){r.e(e)}finally{r.f()}}}),c=__webpack_require__(150);window.CKEditor5.craftcms.ToolbarBuilder=u,window.CKEditor5.craftcms.ConfigOptions=c.Z}()})();
+/******/ (function() { // webpackBootstrap
+/******/ 	var __webpack_modules__ = ({
+
+/***/ "./ConfigOptions.js":
+/*!**************************!*\
+  !*** ./ConfigOptions.js ***!
+  \**************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _ckeconfig_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ckeconfig.css */ "./ckeconfig.css");
+/* harmony import */ var _ckeconfig_css__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_ckeconfig_css__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! jquery */ "jquery");
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_1__);
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t["return"] && (u = t["return"](), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
+/**
+ * @link https://craftcms.com/
+ * @copyright Copyright (c) Pixel & Tonic, Inc.
+ * @license GPL-3.0-or-later
+ */
+
+/** global: CKEditor5, Garnish */
+
+
+/* harmony default export */ __webpack_exports__["default"] = (Garnish.Base.extend({
+  jsonSchemaUri: null,
+  language: null,
+  $container: null,
+  $jsonContainer: null,
+  $jsContainer: null,
+  jsonEditor: null,
+  jsEditor: null,
+  defaults: null,
+  init: function init(id, jsonSchemaUri) {
+    var _this = this;
+    this.jsonSchemaUri = jsonSchemaUri;
+    this.$container = jquery__WEBPACK_IMPORTED_MODULE_1___default()("#".concat(id));
+    this.$jsonContainer = jquery__WEBPACK_IMPORTED_MODULE_1___default()("#".concat(id, "-json-container"));
+    this.$jsContainer = jquery__WEBPACK_IMPORTED_MODULE_1___default()("#".concat(id, "-js-container"));
+    this.jsonEditor = window.monacoEditorInstances["".concat(id, "-json")];
+    this.jsEditor = window.monacoEditorInstances["".concat(id, "-js")];
+    var $languagePicker = this.$container.children('.btngroup');
+    if (this.$jsonContainer.hasClass('hidden')) {
+      this.language = 'js';
+    } else {
+      this.language = 'json';
+    }
+    this.defaults = {};
+    var lastJsValue = null;
+    new Craft.Listbox($languagePicker, {
+      onChange: function onChange($selectedOption) {
+        _this.language = $selectedOption.data('language');
+        switch (_this.language) {
+          case 'json':
+            // get the js value
+            lastJsValue = _this.jsEditor.getModel().getValue();
+            // check if the js value has any functions in it
+            if (_this.jsContainsFunctions(lastJsValue)) {
+              // if it does - show the confirmation dialogue
+              if (!confirm(Craft.t('ckeditor', 'Your JavaScript config contains functions. If you switch to JSON, they will be lost. Would you like to continue?'))) {
+                // if user cancels - go back to the previous option (js)
+                var listbox = $languagePicker.data('listbox');
+                listbox.$options.not('[data-language="json"]').trigger('click');
+                break;
+              }
+            }
+            // if user confirms that they want to proceed, or we don't have functions in the js value,
+            // go ahead and switch
+            _this.$jsonContainer.removeClass('hidden');
+            _this.$jsContainer.addClass('hidden');
+            var json = _this.js2json(lastJsValue);
+            lastJsValue = null;
+            _this.jsonEditor.getModel().setValue(json || '{\n  \n}');
+            _this.jsEditor.getModel().setValue('');
+            break;
+          case 'js':
+            _this.$jsonContainer.addClass('hidden');
+            _this.$jsContainer.removeClass('hidden');
+            var js;
+            // if we have the last remembered js value, it means we're switching back after cancelled confirmation,
+            // so let's use it
+            if (lastJsValue !== null) {
+              js = lastJsValue;
+              lastJsValue = null;
+            } else {
+              js = _this.json2js(_this.jsonEditor.getModel().getValue());
+            }
+            _this.jsEditor.getModel().setValue(js || 'return {\n  \n}');
+            _this.jsonEditor.getModel().setValue('');
+            break;
+        }
+      }
+    });
+
+    // Handle Paste
+    this.jsonEditor.onDidPaste(function (ev) {
+      var pastedContent = _this.jsonEditor.getModel().getValueInRange(ev.range);
+      var config;
+      try {
+        eval("config = {".concat(pastedContent, "}"));
+      } catch (e) {
+        // oh well
+        return;
+      }
+      var json = JSON.stringify(config, null, 2);
+      var trimmed = Craft.trim(json.substring(1, json.length - 1));
+      if (!trimmed) {
+        return;
+      }
+      _this.jsonEditor.executeEdits('', [{
+        range: ev.range,
+        text: trimmed
+      }]);
+    });
+  },
+  getConfig: function getConfig() {
+    var json;
+    if (this.language === 'json') {
+      json = Craft.trim(this.jsonEditor.getModel().getValue()) || '{}';
+    } else {
+      var value = Craft.trim(this.jsEditor.getModel().getValue());
+      json = value ? this.js2json(value) : '{}';
+      if (json === false) {
+        return false;
+      }
+    }
+    try {
+      var config = JSON.parse(json);
+      return jquery__WEBPACK_IMPORTED_MODULE_1___default().isPlainObject(config) ? config : false;
+    } catch (e) {
+      return false;
+    }
+  },
+  setConfig: function setConfig(config) {
+    var json = this.config2json(config);
+    if (this.language === 'json') {
+      this.jsonEditor.getModel().setValue(json);
+    } else {
+      var js = this.json2js(json);
+      this.jsEditor.getModel().setValue(js || 'return {\n  \n}');
+    }
+  },
+  addSetting: function addSetting(setting) {
+    var config = this.getConfig();
+    if (!config) {
+      return;
+    }
+
+    // already present?
+    if (typeof config[setting] !== 'undefined') {
+      return;
+    }
+    if (typeof this.defaults[setting] === 'undefined') {
+      this.populateDefault(setting);
+      if (typeof this.defaults[setting] === 'undefined') {
+        return;
+      }
+    }
+    config[setting] = this.defaults[setting];
+    this.setConfig(config);
+  },
+  removeSetting: function removeSetting(setting) {
+    var config = this.getConfig();
+    if (!config) {
+      return;
+    }
+
+    // not present?
+    if (typeof config[setting] === 'undefined') {
+      return;
+    }
+
+    // keep track of the value in case the setting needs to be added back later
+    this.defaults[setting] = config[setting];
+    delete config[setting];
+    this.setConfig(config);
+  },
+  populateDefault: function populateDefault(setting) {
+    var _this2 = this;
+    var schema;
+    try {
+      schema = window.monaco.languages.json.jsonDefaults.diagnosticsOptions.schemas.find(function (s) {
+        return s.uri === _this2.jsonSchemaUri;
+      }).schema;
+    } catch (e) {
+      console.warn('Couldn’t get config options JSON schema.', e);
+      return;
+    }
+    if (!schema.$defs || !schema.$defs.EditorConfig || !schema.$defs.EditorConfig.properties) {
+      console.warn('Config options JSON schema is missing $defs.EditorConfig.properties');
+      return;
+    }
+    if (!schema.$defs.EditorConfig.properties[setting]) {
+      return;
+    }
+    var property = schema.$defs.EditorConfig.properties[setting];
+    if (property["default"]) {
+      this.defaults[setting] = property["default"];
+      return;
+    }
+    if (!property.$ref) {
+      return;
+    }
+    var m = property.$ref.match(/^#\/\$defs\/(\w+)/);
+    if (!m) {
+      return;
+    }
+    var defName = m[1];
+    if (!schema.$defs[defName] || !schema.$defs[defName]["default"]) {
+      return;
+    }
+    this.defaults[setting] = schema.$defs[defName]["default"];
+  },
+  replacer: function replacer(key, value) {
+    if (typeof value === 'function') {
+      return '__HAS__FUNCTION__';
+    }
+    return value;
+  },
+  jsContainsFunctions: function jsContainsFunctions(js) {
+    var config = this.getValidJsonConfig(js);
+    if (config === false) {
+      return true;
+    }
+    var json = JSON.stringify(config, this.replacer, 2);
+    if (json.match(/__HAS__FUNCTION__/)) {
+      return true;
+    }
+    return false;
+  },
+  config2json: function config2json(config) {
+    var json = JSON.stringify(config, null, 2);
+    if (json === '{}') {
+      json = '{\n  \n}';
+    }
+    return json;
+  },
+  getValidJsonConfig: function getValidJsonConfig(js) {
+    var m = (js || '').match(/return\s*(\{[\w\W]*})/);
+    if (!m) {
+      return false;
+    }
+    var config;
+    // See if it's valid JSON
+    try {
+      eval("config = ".concat(m[1], ";"));
+    } catch (e) {
+      // oh well
+      return false;
+    }
+    return config;
+  },
+  js2json: function js2json(js) {
+    var config = this.getValidJsonConfig(js);
+    if (config === false) {
+      return false;
+    }
+    return this.config2json(config);
+  },
+  json2js: function json2js(json) {
+    var config;
+    try {
+      config = JSON.parse(json);
+    } catch (e) {
+      return false;
+    }
+    if (!jquery__WEBPACK_IMPORTED_MODULE_1___default().isPlainObject(config)) {
+      return false;
+    }
+    var js = this.jsify(config, '');
+    if (js === '{\n}') {
+      js = '{\n  \n}';
+    }
+    return "return ".concat(js);
+  },
+  jsify: function jsify(value, indent) {
+    var js;
+    if (jquery__WEBPACK_IMPORTED_MODULE_1___default().isArray(value)) {
+      js = '[\n';
+      var _iterator = _createForOfIteratorHelper(value),
+        _step;
+      try {
+        for (_iterator.s(); !(_step = _iterator.n()).done;) {
+          var v = _step.value;
+          js += "".concat(indent, "  ").concat(this.jsify(v, indent + '  '), ",\n");
+        }
+      } catch (err) {
+        _iterator.e(err);
+      } finally {
+        _iterator.f();
+      }
+      js += "".concat(indent, "]");
+    } else if (jquery__WEBPACK_IMPORTED_MODULE_1___default().isPlainObject(value)) {
+      js = '{\n';
+      for (var _i = 0, _Object$entries = Object.entries(value); _i < _Object$entries.length; _i++) {
+        var _Object$entries$_i = _slicedToArray(_Object$entries[_i], 2),
+          k = _Object$entries$_i[0],
+          _v = _Object$entries$_i[1];
+        js += "".concat(indent, "  ").concat(k, ": ").concat(this.jsify(_v, indent + '  '), ",\n");
+      }
+      js += "".concat(indent, "}");
+    } else if (typeof value === 'string' && !value.match(/[\r\n']/)) {
+      js = "'".concat(value, "'");
+    } else {
+      js = JSON.stringify(value);
+    }
+    return js;
+  }
+}));
+
+/***/ }),
+
+/***/ "./ToolbarBuilder.js":
+/*!***************************!*\
+  !*** ./ToolbarBuilder.js ***!
+  \***************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _ckeconfig_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ckeconfig.css */ "./ckeconfig.css");
+/* harmony import */ var _ckeconfig_css__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_ckeconfig_css__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! jquery */ "jquery");
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_1__);
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
+function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
+function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
+/**
+ * @link https://craftcms.com/
+ * @copyright Copyright (c) Pixel & Tonic, Inc.
+ * @license GPL-3.0-or-later
+ */
+
+/** global: CKEditor5, Garnish */
+
+
+/* harmony default export */ __webpack_exports__["default"] = (Garnish.Base.extend({
+  $sourceContainer: null,
+  $targetContainer: null,
+  $input: null,
+  value: null,
+  components: null,
+  drag: null,
+  $items: null,
+  draggingSourceItem: null,
+  draggingSeparator: null,
+  $insertion: null,
+  showingInsertion: false,
+  closestItem: null,
+  init: function init(id, containerId, configOptions, namespace) {
+    var _this = this;
+    this.$sourceContainer = jquery__WEBPACK_IMPORTED_MODULE_1___default()("#".concat(id, " .ckeditor-tb--source .ck-toolbar__items"));
+    this.$targetContainer = jquery__WEBPACK_IMPORTED_MODULE_1___default()("#".concat(id, " .ckeditor-tb--target .ck-toolbar__items"));
+    this.$input = jquery__WEBPACK_IMPORTED_MODULE_1___default()("#".concat(id, " input"));
+    this.value = JSON.parse(this.$input.val());
+    var editorContainer = document.createElement('DIV');
+    var editorElement = document.createElement('DIV');
+    editorContainer.appendChild(editorElement);
+    CKEditor5.craftcms.create(editorElement, {
+      linkOptions: [{
+        elementType: 'craft\\elements\\Asset'
+      }],
+      assetSources: ['*'],
+      entryTypeOptions: [{
+        label: 'fake',
+        value: 'fake'
+      }]
+    }).then(function (editor) {
+      var cf = editor.ui.componentFactory;
+      var names = Array.from(cf.names());
+      _this.components = {};
+      for (var _i = 0, _names = names; _i < _names.length; _i++) {
+        var name = _names[_i];
+        _this.components[name] = cf.create(name);
+      }
+      var items = CKEditor5.craftcms.toolbarItems;
+
+      // Flatten any groups that are only partially selected
+      var _loop = function _loop(_i2) {
+        var group = items[_i2];
+        if (group.length > 1) {
+          var index = _this.value.findIndex(function (name) {
+            return group.some(function (item) {
+              return item.button === name;
+            });
+          });
+          if (index !== -1) {
+            for (var j = 0; j < group.length; j++) {
+              if (_this.value[index + j] !== group[j].button) {
+                items.splice.apply(items, [_i2, 1].concat(_toConsumableArray(group.map(function (item) {
+                  return [item];
+                }))));
+                _i2 += group.length - 1;
+                break;
+              }
+            }
+          }
+        }
+        i = _i2;
+      };
+      for (var i = 0; i < items.length; i++) {
+        _loop(i);
+      }
+      _this.drag = new Garnish.DragDrop({
+        dropTargets: _this.$targetContainer,
+        helper: function helper($item) {
+          var $outerContainer = jquery__WEBPACK_IMPORTED_MODULE_1___default()('<div class="offset-drag-helper ck ck-reset_all ck-editor ck-rounded-corners"/>');
+          var $innerContainer = jquery__WEBPACK_IMPORTED_MODULE_1___default()('<div class="ck ck-toolbar"/>').appendTo($outerContainer);
+          $item.appendTo($innerContainer);
+          return $outerContainer;
+        },
+        moveHelperToCursor: true,
+        onDragStart: function onDragStart() {
+          Garnish.$bod.addClass('dragging');
+          var $draggee = _this.drag.$draggee;
+          _this.draggingSourceItem = jquery__WEBPACK_IMPORTED_MODULE_1___default().contains(_this.$sourceContainer[0], $draggee[0]);
+          _this.draggingSeparator = $draggee.hasClass('ckeditor-tb--separator');
+          _this.$insertion = jquery__WEBPACK_IMPORTED_MODULE_1___default()('<div class="ckeditor-tb--insertion"/>').css({
+            width: $draggee.outerWidth()
+          });
+          if (_this.draggingSourceItem) {
+            if (_this.draggingSeparator) {
+              // don't hide the draggee as we're just going to duplicate it
+              $draggee.css('visibility', '');
+            } else {
+              var property = Craft.orientation === 'ltr' ? 'margin-right' : 'margin-left';
+              var margin = -1 * $draggee.outerWidth();
+              $draggee.stop().velocity(_defineProperty({}, property, margin), 200, function () {
+                $draggee.addClass('hidden');
+              });
+            }
+          } else {
+            $draggee.addClass('hidden');
+            _this.$insertion.insertBefore($draggee);
+            _this.showingInsertion = true;
+          }
+          _this.setMidpoints();
+        },
+        onDrag: function onDrag() {
+          _this.checkForNewClosestItem();
+        },
+        onDragStop: function onDragStop() {
+          Garnish.$bod.removeClass('dragging');
+          var $draggee = _this.drag.$draggee;
+          _this.checkForNewClosestItem();
+          if (_this.showingInsertion) {
+            if (_this.draggingSourceItem) {
+              // clone the source item into the toolbar
+              var $item;
+              if (_this.draggingSeparator) {
+                $item = _this.renderSeparator();
+              } else {
+                var componentNames = $draggee.data('componentNames');
+                $item = _this.renderComponentGroup(componentNames);
+                // add any config settings
+                var _iterator = _createForOfIteratorHelper(componentNames),
+                  _step;
+                try {
+                  var _loop2 = function _loop2() {
+                    var name = _step.value;
+                    var item = items.flat().find(function (_ref) {
+                      var button = _ref.button;
+                      return button === name;
+                    });
+                    if (item && item.configOption) {
+                      configOptions.addSetting(item.configOption);
+                    }
+                  };
+                  for (_iterator.s(); !(_step = _iterator.n()).done;) {
+                    _loop2();
+                  }
+                } catch (err) {
+                  _iterator.e(err);
+                } finally {
+                  _iterator.f();
+                }
+              }
+              $item.data('sourceItem', $draggee[0]);
+              $item.css('visibility', 'hidden');
+              _this.$insertion.replaceWith($item);
+              _this.drag.$draggee = $item;
+            } else {
+              _this.$insertion.replaceWith($draggee);
+              $draggee.removeClass('hidden');
+            }
+          } else {
+            if (!_this.draggingSourceItem) {
+              var $sourceItem = jquery__WEBPACK_IMPORTED_MODULE_1___default()($draggee.data('sourceItem'));
+              $draggee.remove();
+              _this.drag.$draggee = $draggee = $sourceItem;
+              if (!_this.draggingSeparator) {
+                // remove any config settings
+                var _iterator2 = _createForOfIteratorHelper($sourceItem.data('componentNames')),
+                  _step2;
+                try {
+                  var _loop3 = function _loop3() {
+                    var name = _step2.value;
+                    var item = items.flat().find(function (_ref2) {
+                      var button = _ref2.button;
+                      return button === name;
+                    });
+                    if (item && item.configOption) {
+                      configOptions.removeSetting(item.configOption);
+                    }
+                  };
+                  for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
+                    _loop3();
+                  }
+                } catch (err) {
+                  _iterator2.e(err);
+                } finally {
+                  _iterator2.f();
+                }
+              }
+            }
+            if (!_this.draggingSeparator) {
+              $draggee.removeClass('hidden');
+              var property = Craft.orientation === 'ltr' ? 'margin-right' : 'margin-left';
+              var currentMargin = $draggee.css(property);
+              $draggee.css(property, '');
+              var targetMargin = $draggee.css(property);
+              $draggee.css(property, currentMargin);
+              $draggee.stop().velocity(_defineProperty({}, property, targetMargin), 200, function () {
+                $draggee.css(property, '');
+              });
+            }
+          }
+          _this.drag.returnHelpersToDraggees();
+
+          // reset the items
+          _this.$items = _this.$targetContainer.children();
+          _this.value = [];
+          var _iterator3 = _createForOfIteratorHelper(_this.$items.toArray()),
+            _step3;
+          try {
+            for (_iterator3.s(); !(_step3 = _iterator3.n()).done;) {
+              var item = _step3.value;
+              var _$item = jquery__WEBPACK_IMPORTED_MODULE_1___default()(item);
+              if (_$item.hasClass('ckeditor-tb--separator')) {
+                _this.value.push('|');
+              } else {
+                var _this$value;
+                (_this$value = _this.value).push.apply(_this$value, _toConsumableArray(_$item.data('componentNames')));
+              }
+            }
+          } catch (err) {
+            _iterator3.e(err);
+          } finally {
+            _iterator3.f();
+          }
+          _this.$input.val(JSON.stringify(_this.value));
+        }
+      });
+      var sourceItems = {};
+      var _iterator4 = _createForOfIteratorHelper(items),
+        _step4;
+      try {
+        for (_iterator4.s(); !(_step4 = _iterator4.n()).done;) {
+          var group = _step4.value;
+          var $item = _this.renderComponentGroup(group);
+          if (!$item) {
+            continue;
+          }
+          $item.appendTo(_this.$sourceContainer);
+          sourceItems[group.map(function (item) {
+            return item.button;
+          }).join(',')] = $item[0];
+          if (_this.value.includes(group[0].button)) {
+            $item.addClass('hidden');
+          }
+        }
+      } catch (err) {
+        _iterator4.e(err);
+      } finally {
+        _iterator4.f();
+      }
+      sourceItems['|'] = _this.renderSeparator().appendTo(_this.$sourceContainer)[0];
+      _this.$items = jquery__WEBPACK_IMPORTED_MODULE_1___default()();
+      var _loop4 = function _loop4(_i4) {
+          var name = _this.value[_i4];
+          var $item, key;
+          if (name === '|') {
+            $item = _this.renderSeparator().appendTo(_this.$targetContainer);
+            key = '|';
+          } else {
+            var _group = items.find(function (group) {
+              return group.some(function (item) {
+                return item.button === name;
+              });
+            });
+            if (!_group) {
+              _i3 = _i4;
+              // must no longer be a valid item
+              return 0; // continue
+            }
+            $item = _this.renderComponentGroup(_group);
+            if (!$item) {
+              _i3 = _i4;
+              return 0; // continue
+            }
+            $item.appendTo(_this.$targetContainer);
+            key = _group.map(function (item) {
+              return item.button;
+            }).join(',');
+            _i4 += _group.length - 1;
+          }
+          $item.data('sourceItem', sourceItems[key]);
+          _this.$items = _this.$items.add($item);
+          _i3 = _i4;
+        },
+        _ret;
+      for (var _i3 = 0; _i3 < _this.value.length; _i3++) {
+        _ret = _loop4(_i3);
+        if (_ret === 0) continue;
+      }
+    });
+  },
+  renderSeparator: function renderSeparator() {
+    var $separator = jquery__WEBPACK_IMPORTED_MODULE_1___default()('<div class="ckeditor-tb--item ckeditor-tb--separator" data-cke-tooltip-text="Separator"><span class="ck ck-toolbar__separator"/></div>');
+    this.drag.addItems($separator);
+    return $separator;
+  },
+  renderComponentGroup: function renderComponentGroup(group) {
+    group = group.map(function (item) {
+      return typeof item === 'string' ? item : item.button;
+    });
+    var elements = [];
+    var tooltips = [];
+    var _iterator5 = _createForOfIteratorHelper(group),
+      _step5;
+    try {
+      for (_iterator5.s(); !(_step5 = _iterator5.n()).done;) {
+        var name = _step5.value;
+        var $element = void 0;
+        try {
+          $element = this.renderComponent(name);
+        } catch (e) {
+          console.warn(e);
+          continue;
+        }
+        elements.push($element);
+        var tooltip = ($element.is('[data-cke-tooltip-text]') ? $element : $element.find('[data-cke-tooltip-text]')).attr('data-cke-tooltip-text');
+        tooltips.push(tooltip ? tooltip.replace(/ \(.*\)$/, '') : "".concat(name[0].toUpperCase()).concat(name.slice(1)));
+      }
+    } catch (err) {
+      _iterator5.e(err);
+    } finally {
+      _iterator5.f();
+    }
+    if (!elements.length) {
+      return false;
+    }
+    var $item = jquery__WEBPACK_IMPORTED_MODULE_1___default()('<div class="ckeditor-tb--item"/>').append(elements);
+    $item.attr('data-cke-tooltip-text', tooltips.join(', '));
+    $item.data('componentNames', group);
+    this.drag.addItems($item);
+    return $item;
+  },
+  renderComponent: function renderComponent(name) {
+    var component = this.components[name];
+    if (!component) {
+      throw "Missing component: ".concat(name);
+    }
+    if (!component.isRendered) {
+      component.render();
+    }
+    var $element = jquery__WEBPACK_IMPORTED_MODULE_1___default()(component.element.outerHTML);
+    $element.data('componentName', name);
+    return $element;
+  },
+  getClosestItem: function getClosestItem() {
+    var _this2 = this;
+    if (!Garnish.hitTest(this.drag.mouseX, this.drag.mouseY, this.$targetContainer)) {
+      return false;
+    }
+    if (!this.$items.length) {
+      return null;
+    }
+    var items = this.$items.toArray();
+    if (this.showingInsertion) {
+      items.push(this.$insertion[0]);
+    }
+    var mouseDiffs = items.map(function (item) {
+      var midpoint = jquery__WEBPACK_IMPORTED_MODULE_1___default().data(item, 'midpoint');
+      return Garnish.getDist(midpoint.left, midpoint.top, _this2.drag.mouseX, _this2.drag.mouseY);
+    });
+    var minMouseDiff = Math.min.apply(Math, _toConsumableArray(mouseDiffs));
+    var index = mouseDiffs.indexOf(minMouseDiff);
+    return items[index];
+  },
+  checkForNewClosestItem: function checkForNewClosestItem() {
+    // Is there a new closest item?
+    var closestItem = this.getClosestItem();
+    if (closestItem === false) {
+      if (this.showingInsertion) {
+        this.$insertion.remove();
+        this.showingInsertion = false;
+      }
+      return;
+    }
+    if (closestItem === this.$insertion[0]) {
+      return;
+    }
+    if (!closestItem) {
+      this.$insertion.appendTo(this.$targetContainer);
+    } else if (this.drag.mouseX < jquery__WEBPACK_IMPORTED_MODULE_1___default().data(closestItem, 'midpoint').left) {
+      this.$insertion.insertBefore(closestItem);
+    } else {
+      this.$insertion.insertAfter(closestItem);
+    }
+    this.showingInsertion = true;
+    this.setMidpoints();
+  },
+  setMidpoints: function setMidpoints() {
+    var items = this.$items.toArray();
+    if (this.showingInsertion) {
+      items.push(this.$insertion[0]);
+    }
+    var _iterator6 = _createForOfIteratorHelper(items),
+      _step6;
+    try {
+      for (_iterator6.s(); !(_step6 = _iterator6.n()).done;) {
+        var item = _step6.value;
+        var $item = jquery__WEBPACK_IMPORTED_MODULE_1___default()(item);
+        var offset = $item.offset();
+        var left = offset.left + $item.outerWidth() / 2;
+        var top = offset.top + $item.outerHeight() / 2;
+        $item.data('midpoint', {
+          left: left,
+          top: top
+        });
+      }
+    } catch (err) {
+      _iterator6.e(err);
+    } finally {
+      _iterator6.f();
+    }
+  }
+}));
+
+/***/ }),
+
+/***/ "../../../../../node_modules/mini-css-extract-plugin/dist/loader.js??ruleSet[1].rules[3].use[1]!../../../../../node_modules/css-loader/dist/cjs.js!../../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[3].use[3]!../../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[3].use[4]!./ckeconfig.css":
+/*!********************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ../../../../../node_modules/mini-css-extract-plugin/dist/loader.js??ruleSet[1].rules[3].use[1]!../../../../../node_modules/css-loader/dist/cjs.js!../../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[3].use[3]!../../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[3].use[4]!./ckeconfig.css ***!
+  \********************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ (function() {
+
+// extracted by mini-css-extract-plugin
+
+/***/ }),
+
+/***/ "./ckeconfig.css":
+/*!***********************!*\
+  !*** ./ckeconfig.css ***!
+  \***********************/
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(/*! !!../../../../../node_modules/mini-css-extract-plugin/dist/loader.js??ruleSet[1].rules[3].use[1]!../../../../../node_modules/css-loader/dist/cjs.js!../../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[3].use[3]!../../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[3].use[4]!./ckeconfig.css */ "../../../../../node_modules/mini-css-extract-plugin/dist/loader.js??ruleSet[1].rules[3].use[1]!../../../../../node_modules/css-loader/dist/cjs.js!../../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[3].use[3]!../../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[3].use[4]!./ckeconfig.css");
+if(content.__esModule) content = content.default;
+if(typeof content === 'string') content = [[module.id, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var add = (__webpack_require__(/*! !../../../../../node_modules/vue-style-loader/lib/addStylesClient.js */ "../../../../../node_modules/vue-style-loader/lib/addStylesClient.js")["default"])
+var update = add("4690113c", content, false, {});
+// Hot Module Replacement
+if(false) {}
+
+/***/ }),
+
+/***/ "../../../../../node_modules/vue-style-loader/lib/addStylesClient.js":
+/*!***************************************************************************!*\
+  !*** ../../../../../node_modules/vue-style-loader/lib/addStylesClient.js ***!
+  \***************************************************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": function() { return /* binding */ addStylesClient; }
+/* harmony export */ });
+/* harmony import */ var _listToStyles__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./listToStyles */ "../../../../../node_modules/vue-style-loader/lib/listToStyles.js");
+/*
+  MIT License http://www.opensource.org/licenses/mit-license.php
+  Author Tobias Koppers @sokra
+  Modified by Evan You @yyx990803
+*/
+
+
+
+var hasDocument = typeof document !== 'undefined'
+
+if (typeof DEBUG !== 'undefined' && DEBUG) {
+  if (!hasDocument) {
+    throw new Error(
+    'vue-style-loader cannot be used in a non-browser environment. ' +
+    "Use { target: 'node' } in your Webpack config to indicate a server-rendering environment."
+  ) }
+}
+
+/*
+type StyleObject = {
+  id: number;
+  parts: Array<StyleObjectPart>
+}
+
+type StyleObjectPart = {
+  css: string;
+  media: string;
+  sourceMap: ?string
+}
+*/
+
+var stylesInDom = {/*
+  [id: number]: {
+    id: number,
+    refs: number,
+    parts: Array<(obj?: StyleObjectPart) => void>
+  }
+*/}
+
+var head = hasDocument && (document.head || document.getElementsByTagName('head')[0])
+var singletonElement = null
+var singletonCounter = 0
+var isProduction = false
+var noop = function () {}
+var options = null
+var ssrIdKey = 'data-vue-ssr-id'
+
+// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
+// tags it will allow on a page
+var isOldIE = typeof navigator !== 'undefined' && /msie [6-9]\b/.test(navigator.userAgent.toLowerCase())
+
+function addStylesClient (parentId, list, _isProduction, _options) {
+  isProduction = _isProduction
+
+  options = _options || {}
+
+  var styles = (0,_listToStyles__WEBPACK_IMPORTED_MODULE_0__["default"])(parentId, list)
+  addStylesToDom(styles)
+
+  return function update (newList) {
+    var mayRemove = []
+    for (var i = 0; i < styles.length; i++) {
+      var item = styles[i]
+      var domStyle = stylesInDom[item.id]
+      domStyle.refs--
+      mayRemove.push(domStyle)
+    }
+    if (newList) {
+      styles = (0,_listToStyles__WEBPACK_IMPORTED_MODULE_0__["default"])(parentId, newList)
+      addStylesToDom(styles)
+    } else {
+      styles = []
+    }
+    for (var i = 0; i < mayRemove.length; i++) {
+      var domStyle = mayRemove[i]
+      if (domStyle.refs === 0) {
+        for (var j = 0; j < domStyle.parts.length; j++) {
+          domStyle.parts[j]()
+        }
+        delete stylesInDom[domStyle.id]
+      }
+    }
+  }
+}
+
+function addStylesToDom (styles /* Array<StyleObject> */) {
+  for (var i = 0; i < styles.length; i++) {
+    var item = styles[i]
+    var domStyle = stylesInDom[item.id]
+    if (domStyle) {
+      domStyle.refs++
+      for (var j = 0; j < domStyle.parts.length; j++) {
+        domStyle.parts[j](item.parts[j])
+      }
+      for (; j < item.parts.length; j++) {
+        domStyle.parts.push(addStyle(item.parts[j]))
+      }
+      if (domStyle.parts.length > item.parts.length) {
+        domStyle.parts.length = item.parts.length
+      }
+    } else {
+      var parts = []
+      for (var j = 0; j < item.parts.length; j++) {
+        parts.push(addStyle(item.parts[j]))
+      }
+      stylesInDom[item.id] = { id: item.id, refs: 1, parts: parts }
+    }
+  }
+}
+
+function createStyleElement () {
+  var styleElement = document.createElement('style')
+  styleElement.type = 'text/css'
+  head.appendChild(styleElement)
+  return styleElement
+}
+
+function addStyle (obj /* StyleObjectPart */) {
+  var update, remove
+  var styleElement = document.querySelector('style[' + ssrIdKey + '~="' + obj.id + '"]')
+
+  if (styleElement) {
+    if (isProduction) {
+      // has SSR styles and in production mode.
+      // simply do nothing.
+      return noop
+    } else {
+      // has SSR styles but in dev mode.
+      // for some reason Chrome can't handle source map in server-rendered
+      // style tags - source maps in <style> only works if the style tag is
+      // created and inserted dynamically. So we remove the server rendered
+      // styles and inject new ones.
+      styleElement.parentNode.removeChild(styleElement)
+    }
+  }
+
+  if (isOldIE) {
+    // use singleton mode for IE9.
+    var styleIndex = singletonCounter++
+    styleElement = singletonElement || (singletonElement = createStyleElement())
+    update = applyToSingletonTag.bind(null, styleElement, styleIndex, false)
+    remove = applyToSingletonTag.bind(null, styleElement, styleIndex, true)
+  } else {
+    // use multi-style-tag mode in all other cases
+    styleElement = createStyleElement()
+    update = applyToTag.bind(null, styleElement)
+    remove = function () {
+      styleElement.parentNode.removeChild(styleElement)
+    }
+  }
+
+  update(obj)
+
+  return function updateStyle (newObj /* StyleObjectPart */) {
+    if (newObj) {
+      if (newObj.css === obj.css &&
+          newObj.media === obj.media &&
+          newObj.sourceMap === obj.sourceMap) {
+        return
+      }
+      update(obj = newObj)
+    } else {
+      remove()
+    }
+  }
+}
+
+var replaceText = (function () {
+  var textStore = []
+
+  return function (index, replacement) {
+    textStore[index] = replacement
+    return textStore.filter(Boolean).join('\n')
+  }
+})()
+
+function applyToSingletonTag (styleElement, index, remove, obj) {
+  var css = remove ? '' : obj.css
+
+  if (styleElement.styleSheet) {
+    styleElement.styleSheet.cssText = replaceText(index, css)
+  } else {
+    var cssNode = document.createTextNode(css)
+    var childNodes = styleElement.childNodes
+    if (childNodes[index]) styleElement.removeChild(childNodes[index])
+    if (childNodes.length) {
+      styleElement.insertBefore(cssNode, childNodes[index])
+    } else {
+      styleElement.appendChild(cssNode)
+    }
+  }
+}
+
+function applyToTag (styleElement, obj) {
+  var css = obj.css
+  var media = obj.media
+  var sourceMap = obj.sourceMap
+
+  if (media) {
+    styleElement.setAttribute('media', media)
+  }
+  if (options.ssrId) {
+    styleElement.setAttribute(ssrIdKey, obj.id)
+  }
+
+  if (sourceMap) {
+    // https://developer.chrome.com/devtools/docs/javascript-debugging
+    // this makes source maps inside style tags work properly in Chrome
+    css += '\n/*# sourceURL=' + sourceMap.sources[0] + ' */'
+    // http://stackoverflow.com/a/26603875
+    css += '\n/*# sourceMappingURL=data:application/json;base64,' + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + ' */'
+  }
+
+  if (styleElement.styleSheet) {
+    styleElement.styleSheet.cssText = css
+  } else {
+    while (styleElement.firstChild) {
+      styleElement.removeChild(styleElement.firstChild)
+    }
+    styleElement.appendChild(document.createTextNode(css))
+  }
+}
+
+
+/***/ }),
+
+/***/ "../../../../../node_modules/vue-style-loader/lib/listToStyles.js":
+/*!************************************************************************!*\
+  !*** ../../../../../node_modules/vue-style-loader/lib/listToStyles.js ***!
+  \************************************************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": function() { return /* binding */ listToStyles; }
+/* harmony export */ });
+/**
+ * Translates the list format produced by css-loader into something
+ * easier to manipulate.
+ */
+function listToStyles (parentId, list) {
+  var styles = []
+  var newStyles = {}
+  for (var i = 0; i < list.length; i++) {
+    var item = list[i]
+    var id = item[0]
+    var css = item[1]
+    var media = item[2]
+    var sourceMap = item[3]
+    var part = {
+      id: parentId + ':' + i,
+      css: css,
+      media: media,
+      sourceMap: sourceMap
+    }
+    if (!newStyles[id]) {
+      styles.push(newStyles[id] = { id: id, parts: [part] })
+    } else {
+      newStyles[id].parts.push(part)
+    }
+  }
+  return styles
+}
+
+
+/***/ }),
+
+/***/ "jquery":
+/*!*************************!*\
+  !*** external "jQuery" ***!
+  \*************************/
+/***/ (function(module) {
+
+"use strict";
+module.exports = jQuery;
+
+/***/ })
+
+/******/ 	});
+/************************************************************************/
+/******/ 	// The module cache
+/******/ 	var __webpack_module_cache__ = {};
+/******/ 	
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/ 		// Check if module is in cache
+/******/ 		var cachedModule = __webpack_module_cache__[moduleId];
+/******/ 		if (cachedModule !== undefined) {
+/******/ 			return cachedModule.exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = __webpack_module_cache__[moduleId] = {
+/******/ 			id: moduleId,
+/******/ 			// no module.loaded needed
+/******/ 			exports: {}
+/******/ 		};
+/******/ 	
+/******/ 		// Execute the module function
+/******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
+/******/ 	
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/ 	
+/************************************************************************/
+/******/ 	/* webpack/runtime/compat get default export */
+/******/ 	!function() {
+/******/ 		// getDefaultExport function for compatibility with non-harmony modules
+/******/ 		__webpack_require__.n = function(module) {
+/******/ 			var getter = module && module.__esModule ?
+/******/ 				function() { return module['default']; } :
+/******/ 				function() { return module; };
+/******/ 			__webpack_require__.d(getter, { a: getter });
+/******/ 			return getter;
+/******/ 		};
+/******/ 	}();
+/******/ 	
+/******/ 	/* webpack/runtime/define property getters */
+/******/ 	!function() {
+/******/ 		// define getter functions for harmony exports
+/******/ 		__webpack_require__.d = function(exports, definition) {
+/******/ 			for(var key in definition) {
+/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 				}
+/******/ 			}
+/******/ 		};
+/******/ 	}();
+/******/ 	
+/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
+/******/ 	!function() {
+/******/ 		__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); }
+/******/ 	}();
+/******/ 	
+/******/ 	/* webpack/runtime/make namespace object */
+/******/ 	!function() {
+/******/ 		// define __esModule on exports
+/******/ 		__webpack_require__.r = function(exports) {
+/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 			}
+/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 		};
+/******/ 	}();
+/******/ 	
+/************************************************************************/
+var __webpack_exports__ = {};
+// This entry need to be wrapped in an IIFE because it need to be in strict mode.
+!function() {
+"use strict";
+/*!**********************!*\
+  !*** ./ckeconfig.js ***!
+  \**********************/
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _ToolbarBuilder__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ToolbarBuilder */ "./ToolbarBuilder.js");
+/* harmony import */ var _ConfigOptions__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ConfigOptions */ "./ConfigOptions.js");
+/**
+ * @link https://craftcms.com/
+ * @copyright Copyright (c) Pixel & Tonic, Inc.
+ * @license GPL-3.0-or-later
+ */
+
+
+
+window.CKEditor5.craftcms.ToolbarBuilder = _ToolbarBuilder__WEBPACK_IMPORTED_MODULE_0__["default"];
+window.CKEditor5.craftcms.ConfigOptions = _ConfigOptions__WEBPACK_IMPORTED_MODULE_1__["default"];
+}();
+/******/ })()
+;
 //# sourceMappingURL=ckeconfig.js.map

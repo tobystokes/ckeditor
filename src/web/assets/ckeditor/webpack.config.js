@@ -106,7 +106,9 @@ config.module.rules = config.module.rules
 module.exports = (env, argv) => {
   // Don't minify in dev
   if (argv.mode === 'development') {
-    config.optimization = {};
+    config.optimization = {
+      minimize: false,
+    };
   }
 
   return config;

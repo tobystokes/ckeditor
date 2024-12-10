@@ -189,7 +189,7 @@ export default class CraftEntriesUI extends Plugin {
     button.set({
       isEnabled: true,
       label: Craft.t('app', 'Edit {type}', {
-        type: Craft.t('app', 'entry'),
+        type: Craft.elementTypeNames['craft\\elements\\Entry'][2],
       }),
       tooltip: true,
       withText: true,

@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- CKEditor now requires Craft CMS 5.6+.
+- Added support for viewing CKEditor settings when `allowAdminChanges` is disabled. ([#358](https://github.com/craftcms/ckeditor/pull/358))
 - CKEditor fields no longer have extra bottom padding, and the CKEditor logo is now displayed over the bottom border. ([#252](https://github.com/craftcms/ckeditor/pull/252))
 - Added the ability to show the “Source” button for specific user groups. ([#318](https://github.com/craftcms/ckeditor/pull/318))
 - Added `craft\ckeditor\Field::$sourceEditingGroups`.

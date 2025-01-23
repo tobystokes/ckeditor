@@ -188,6 +188,8 @@ You can use the `ckeditor/convert` command to convert any existing Redactor fiel
 php craft ckeditor/convert
 ```
 
+The command will make changes to your project config. You should commit them, and run `craft up` on other environments for the changes to take effect.
+
 ## Adding CKEditor Plugins
 
 Craft CMS plugins can register additional CKEditor plugins to extend its functionality.

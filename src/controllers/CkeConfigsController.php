@@ -111,36 +111,36 @@ class CkeConfigsController extends Controller
 
         $response
             ->prepareScreen(function(Response $response, $containerId) use ($ckeConfig) {
-            $jsonSchemaUri = sprintf('https://craft-code-editor.com/%s', $this->view->namespaceInputId('config-options-json'));
-            /** @var Response|CpScreenResponseBehavior $response */
-            $response->contentTemplate('ckeditor/cke-configs/_edit.twig', [
-                'ckeConfig' => $ckeConfig,
-                'jsonSchema' => CkeditorConfigSchema::create(),
-                'jsonSchemaUri' => $jsonSchemaUri,
-                'readOnly' => $this->readOnly,
-            ]);
+                $jsonSchemaUri = sprintf('https://craft-code-editor.com/%s', $this->view->namespaceInputId('config-options-json'));
+                /** @var Response|CpScreenResponseBehavior $response */
+                $response->contentTemplate('ckeditor/cke-configs/_edit.twig', [
+                    'ckeConfig' => $ckeConfig,
+                    'jsonSchema' => CkeditorConfigSchema::create(),
+                    'jsonSchemaUri' => $jsonSchemaUri,
+                    'readOnly' => $this->readOnly,
+                ]);
 
-            $this->view->registerAssetBundle(CkeConfigAsset::class);
-            $this->view->registerJsWithVars(
-                fn(
-                    $toolbarBuilderId,
-                    $configOptionsId,
-                    $containerId,
-                    $jsonSchemaUri,
-                ) => <<<JS
+                $this->view->registerAssetBundle(CkeConfigAsset::class);
+                $this->view->registerJsWithVars(
+                    fn(
+                        $toolbarBuilderId,
+                        $configOptionsId,
+                        $containerId,
+                        $jsonSchemaUri,
+                    ) => <<<JS
 (() => {
 const configOptions = new CKEditor5.craftcms.ConfigOptions($configOptionsId, $jsonSchemaUri);
 new CKEditor5.craftcms.ToolbarBuilder($toolbarBuilderId, $containerId, configOptions);
 })();
 JS,
-                [
-                    $this->view->namespaceInputId('toolbar-builder'),
-                    $this->view->namespaceInputId('config-options'),
-                    $containerId,
-                    $jsonSchemaUri,
-                ],
-            );
-        });
+                    [
+                        $this->view->namespaceInputId('toolbar-builder'),
+                        $this->view->namespaceInputId('config-options'),
+                        $containerId,
+                        $jsonSchemaUri,
+                    ],
+                );
+            });
 
         if ($ckeConfig->uid && !$this->readOnly) {
             $response->addAltAction(Craft::t('ckeditor', 'Save as a new config'), [

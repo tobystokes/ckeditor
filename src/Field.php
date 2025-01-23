@@ -142,8 +142,7 @@ class Field extends HtmlField
     public ?string $defaultTransform = null;
 
     /**
-     * @var string|string[]|null User groups whose members should be able to edit the source even if they're not admin users
-     * if the $enableSourceEditingForNonAdmins is on.
+     * @var string|string[]|null User groups whose members should be able to see the “Source” button
      * @since 3.11.0
      */
     public string|array|null $sourceEditingGroups = ['__ADMINS__'];

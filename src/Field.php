@@ -920,7 +920,7 @@ class Field extends HtmlField implements ElementContainerFieldInterface, Mergeab
             'ui' => [
                 'viewportOffset' => ['top' => 44],
                 'poweredBy' => [
-                    'position' => 'inside',
+                    'position' => 'outside',
                     'label' => '',
                 ],
             ],

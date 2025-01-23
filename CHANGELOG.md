@@ -3,6 +3,9 @@
 ## Unreleased
 
 - CKEditor fields no longer have extra bottom padding, and the CKEditor logo is now displayed over the bottom border. ([#252](https://github.com/craftcms/ckeditor/pull/252))
+- Added the ability to show the “Source” button for specific user groups. ([#318](https://github.com/craftcms/ckeditor/pull/318))
+- Added `craft\ckeditor\Field::$sourceEditingGroups`.
+- Deprecated `craft\ckeditor\Field::$enableSourceEditingForNonAdmins`.
 - Fixed a bug where “Edit entry” buttons were only partially translated. ([#337](https://github.com/craftcms/ckeditor/issues/337))
 - Fixed a bug where copying and pasting nested entries wasn’t working on non-primary sites. ([#315](https://github.com/craftcms/ckeditor/issues/315))
 

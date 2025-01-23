@@ -16,6 +16,7 @@ use craft\ckeditor\web\assets\ckeditor\CkeditorAsset;
 use craft\elements\Asset;
 use craft\elements\Category;
 use craft\elements\Entry;
+use craft\elements\User;
 use craft\errors\InvalidHtmlTagException;
 use craft\helpers\ArrayHelper;
 use craft\helpers\Html;
@@ -141,10 +142,10 @@ class Field extends HtmlField
     public ?string $defaultTransform = null;
 
     /**
-     * @var bool Whether to enable source editing for non-admin users.
-     * @since 3.3.0
+     * @var string|string[]|null User groups whose members should be able to see the “Source” button
+     * @since 3.11.0
      */
-    public bool $enableSourceEditingForNonAdmins = false;
+    public string|array|null $sourceEditingGroups = ['__ADMINS__'];
 
     /**
      * @var bool Whether to show volumes the user doesn’t have permission to view.
@@ -170,6 +171,13 @@ class Field extends HtmlField
             $config['removeEmptyTags'],
             $config['removeNbsp'],
         );
+
+        if (isset($config['enableSourceEditingForNonAdmins'])) {
+            $config['sourceEditingGroups'] = $config['enableSourceEditingForNonAdmins'] ? '*' : ['__ADMINS__'];
+            unset($config['enableSourceEditingForNonAdmins']);
+        } elseif (array_key_exists('sourceEditingGroups', $config) && empty($config['sourceEditingGroups'])) {
+            $config['sourceEditingGroups'] = null;
+        }
 
         parent::__construct($config);
     }
@@ -234,6 +242,22 @@ class Field extends HtmlField
     {
         $view = Craft::$app->getView();
 
+        $userGroupOptions = [
+            [
+                'label' => Craft::t('app', 'Admins'),
+                'value' => '__ADMINS__',
+            ],
+        ];
+
+        foreach (Craft::$app->getUserGroups()->getAllGroups() as $group) {
+            if ($group->can('accessCp')) {
+                $userGroupOptions[] = [
+                    'label' => $group->name,
+                    'value' => $group->uid,
+                ];
+            }
+        }
+
         $volumeOptions = [];
         foreach (Craft::$app->getVolumes()->getAllVolumes() as $volume) {
             if ($volume->getFs()->hasUrls) {
@@ -254,6 +278,7 @@ class Field extends HtmlField
 
         return $view->renderTemplate('ckeditor/_field-settings.twig', [
             'field' => $this,
+            'userGroupOptions' => $userGroupOptions,
             'purifierConfigOptions' => $this->configOptions('htmlpurifier'),
             'volumeOptions' => $volumeOptions,
             'transformOptions' => $transformOptions,
@@ -303,7 +328,7 @@ class Field extends HtmlField
         // Toolbar cleanup
         $toolbar = array_merge($ckeConfig->toolbar);
 
-        if (!$this->enableSourceEditingForNonAdmins && !Craft::$app->getUser()->getIsAdmin()) {
+        if (!$this->isSourceEditingAllowed(Craft::$app->getUser()->getIdentity())) {
             ArrayHelper::removeValue($toolbar, 'sourceEditing');
         }
 
@@ -547,6 +572,32 @@ JS,
         }
 
         return parent::prepValueForInput($value, $element);
+    }
+
+    /**
+     * Returns if user belongs to a group whose members are allowed to edit source even if they're not admins
+     * @param User $user
+     * @return bool
+     */
+    private function isSourceEditingAllowed(User $user): bool
+    {
+        if ($this->sourceEditingGroups === '*') {
+            return true;
+        }
+
+        $sourceEditingGroups = array_flip($this->sourceEditingGroups);
+
+        if ($user->admin && isset($sourceEditingGroups['__ADMINS__'])) {
+            return true;
+        }
+
+        foreach ($user->getGroups() as $group) {
+            if (isset($sourceEditingGroups[$group->uid])) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -1036,5 +1087,21 @@ JS,
         }
 
         return '';
+    }
+
+    /**
+     * @deprecated in 3.11.0
+     */
+    public function getEnableSourceEditingForNonAdmins(): bool
+    {
+        return $this->sourceEditingGroups === '*';
+    }
+
+    /**
+     * @deprecated in 3.11.0
+     */
+    public function setEnableSourceEditingForNonAdmins(bool $value): void
+    {
+        $this->sourceEditingGroups = $value ? '*' : ['__ADMINS__'];
     }
 }

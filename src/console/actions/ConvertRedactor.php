@@ -256,7 +256,7 @@ class ConvertRedactor extends Action
         }
 
         $this->controller->stdout("\n ✓ Finished converting Redactor fields.\n", Console::FG_GREEN, Console::BOLD);
-        $this->stdout("\nCommit your project config changes, 
+        $this->controller->stdout("\nCommit your project config changes, 
 and run `craft up` on other environments
 for the changes to take effect.\n", Console::FG_GREEN);
 

@@ -55,23 +55,15 @@
   on: field.showWordCount
 }) }}
 
-{{ forms.lightswitchField({
-  id: 'enable-source-editing-for-non-admins',
-  name: 'enableSourceEditingForNonAdmins',
-  label: 'Show the “Source” button for non-admin users?'|t('ckeditor'),
-  on: field.enableSourceEditingForNonAdmins,
-  toggle: 'source-editing-groups'
-}) }}
 {% if userGroupOptions|length %}
 <div id="source-editing-groups">
   {{ forms.checkboxSelectField({
     id: 'sourceEditingGroups',
     name: 'sourceEditingGroups',
-    label: 'Available User Groups'|t('ckeditor'),
-    instructions: 'The user groups whose members should see the “Source” button even if they’re not admins.'|t('ckeditor'),
+    label: 'Who should see the “Source” button?'|t('ckeditor'),
     options: userGroupOptions,
     values: field.sourceEditingGroups,
-    showAllOption: userGroupOptions|length ? true : false
+    showAllOption: true,
   }) }}
 </div>
 {% endif %}

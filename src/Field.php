@@ -142,17 +142,11 @@ class Field extends HtmlField
     public ?string $defaultTransform = null;
 
     /**
-     * @var bool Whether to enable source editing for non-admin users.
-     * @since 3.3.0
-     */
-    public bool $enableSourceEditingForNonAdmins = false;
-
-    /**
-     * @var string|array|null User groups whose members should be able to edit the source even if they're not admin users
+     * @var string|string[]|null User groups whose members should be able to edit the source even if they're not admin users
      * if the $enableSourceEditingForNonAdmins is on.
      * @since 3.11.0
      */
-    public string|array|null $sourceEditingGroups = '*';
+    public string|array|null $sourceEditingGroups = ['__ADMINS__'];
 
     /**
      * @var bool Whether to show volumes the user doesn’t have permission to view.
@@ -178,6 +172,13 @@ class Field extends HtmlField
             $config['removeEmptyTags'],
             $config['removeNbsp'],
         );
+
+        if (isset($config['enableSourceEditingForNonAdmins'])) {
+            $config['sourceEditingGroups'] = $config['enableSourceEditingForNonAdmins'] ? '*' : ['__ADMINS__'];
+            unset($config['enableSourceEditingForNonAdmins']);
+        } elseif (array_key_exists('sourceEditingGroups', $config) && empty($config['sourceEditingGroups'])) {
+            $config['sourceEditingGroups'] = null;
+        }
 
         parent::__construct($config);
     }
@@ -242,7 +243,13 @@ class Field extends HtmlField
     {
         $view = Craft::$app->getView();
 
-        $userGroupOptions = [];
+        $userGroupOptions = [
+            [
+                'label' => Craft::t('app', 'Admins'),
+                'value' => '__ADMINS__',
+            ],
+        ];
+
         foreach (Craft::$app->getUserGroups()->getAllGroups() as $group) {
             if ($group->can('accessCp')) {
                 $userGroupOptions[] = [
@@ -575,26 +582,23 @@ JS,
      */
     private function isSourceEditingAllowed(User $user): bool
     {
-        if ($user->admin) {
-            return true;
-        }
-        
-        if (!$this->enableSourceEditingForNonAdmins) {
-            return false;
-        }
-
-        $allowedGroups = $this->sourceEditingGroups;
-        if ($allowedGroups === '*') {
+        if ($this->sourceEditingGroups === '*') {
             return true;
         }
 
-        if (is_string($allowedGroups)) {
-            $allowedGroups = [$allowedGroups];
+        $sourceEditingGroups = array_flip($this->sourceEditingGroups);
+
+        if ($user->admin && isset($sourceEditingGroups['__ADMINS__'])) {
+            return true;
         }
 
-        $userGroups = array_keys(Collection::make($user->getGroups())->keyBy('uid')->all());
+        foreach ($user->getGroups() as $group) {
+            if (isset($sourceEditingGroups[$group->uid])) {
+                return true;
+            }
+        }
 
-        return !empty(array_intersect($allowedGroups, $userGroups));
+        return false;
     }
 
     /**
@@ -1084,5 +1088,21 @@ JS,
         }
 
         return '';
+    }
+
+    /**
+     * @deprecated in 3.11.0
+     */
+    public function getEnableSourceEditingForNonAdmins(): bool
+    {
+        return $this->sourceEditingGroups === '*';
+    }
+
+    /**
+     * @deprecated in 3.11.0
+     */
+    public function setEnableSourceEditingForNonAdmins(bool $value): void
+    {
+        $this->sourceEditingGroups = $value ? '*' : ['__ADMINS__'];
     }
 }

@@ -7,6 +7,7 @@
 - Added `craft\ckeditor\Field::$sourceEditingGroups`.
 - Deprecated `craft\ckeditor\Field::$enableSourceEditingForNonAdmins`.
 - Updated to CKEditor 5 44.0.0.
+- Fixed a bug where toolbar menus weren’t usable within slideouts. ([#345](https://github.com/craftcms/ckeditor/issues/345))
 
 ## 3.10.0 - 2024-10-19
 

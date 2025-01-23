@@ -1,6 +1,6 @@
 # Release Notes for CKEditor for Craft CMS
 
-## Unreleased
+## 4.5.0 - 2025-01-23
 
 - CKEditor now requires Craft CMS 5.6+.
 - Added support for viewing CKEditor settings when `allowAdminChanges` is disabled. ([#358](https://github.com/craftcms/ckeditor/pull/358))

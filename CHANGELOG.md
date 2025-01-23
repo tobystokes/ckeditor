@@ -6,6 +6,7 @@
 - Added the ability to show the “Source” button for specific user groups. ([#318](https://github.com/craftcms/ckeditor/pull/318))
 - Added `craft\ckeditor\Field::$sourceEditingGroups`.
 - Deprecated `craft\ckeditor\Field::$enableSourceEditingForNonAdmins`.
+- Updated to CKEditor 5 44.0.0.
 
 ## 3.10.0 - 2024-10-19
 

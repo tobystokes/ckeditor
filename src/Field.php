@@ -1110,7 +1110,7 @@ JS,
             }
 
             $value = $chunks
-                ->map(function(BaseChunk $chunk) use ($static, $entries) {
+                ->map(function(BaseChunk $chunk) use ($static, $entries, $element) {
                     if ($chunk instanceof Markup) {
                         return $chunk->rawHtml;
                     }
@@ -1119,6 +1119,13 @@ JS,
                     $entry = $entries[$chunk->entryId];
 
                     try {
+                        // set up-to-date owner on the entry
+                        // e.g. when provisional draft was created for the owner and the page was reloaded
+                        $entry->setOwner($element);
+                        if ($entry->id === $entry->getPrimaryOwnerId()) {
+                            $entry->setPrimaryOwner($element);
+                        }
+
                         $cardHtml = $this->getCardHtml($entry);
                     } catch (InvalidConfigException) {
                         // this can happen e.g. when the entry type has been deleted

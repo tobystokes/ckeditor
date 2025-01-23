@@ -460,16 +460,16 @@
         },
         {
             "name": "craftcms/html-field",
-            "version": "3.1.0",
+            "version": "3.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/craftcms/html-field.git",
-                "reference": "34a5796c74e22d4ae80709541367114d03d280ca"
+                "reference": "50a56e4cb4d4511b39674965e0fbff475f62f7f0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/craftcms/html-field/zipball/34a5796c74e22d4ae80709541367114d03d280ca",
-                "reference": "34a5796c74e22d4ae80709541367114d03d280ca",
+                "url": "https://api.github.com/repos/craftcms/html-field/zipball/50a56e4cb4d4511b39674965e0fbff475f62f7f0",
+                "reference": "50a56e4cb4d4511b39674965e0fbff475f62f7f0",
                 "shasum": ""
             },
             "require": {
@@ -505,7 +505,7 @@
                 "rss": "https://github.com/craftcms/html-field/commits/main.atom",
                 "source": "https://github.com/craftcms/html-field"
             },
-            "time": "2024-06-11T14:58:59+00:00"
+            "time": "2024-10-15T20:02:05+00:00"
         },
         {
             "name": "craftcms/plugin-installer",
@@ -2251,16 +2251,16 @@
         },
         {
             "name": "nystudio107/craft-code-editor",
-            "version": "1.0.19",
+            "version": "1.0.22",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nystudio107/craft-code-editor.git",
-                "reference": "a793406e62cd6c7d8e25ac5e0fb2208b4206815b"
+                "reference": "170edf71355b659e1db9ede12980b17c20eb3d1f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nystudio107/craft-code-editor/zipball/a793406e62cd6c7d8e25ac5e0fb2208b4206815b",
-                "reference": "a793406e62cd6c7d8e25ac5e0fb2208b4206815b",
+                "url": "https://api.github.com/repos/nystudio107/craft-code-editor/zipball/170edf71355b659e1db9ede12980b17c20eb3d1f",
+                "reference": "170edf71355b659e1db9ede12980b17c20eb3d1f",
                 "shasum": ""
             },
             "require": {
@@ -2315,7 +2315,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-04-15T16:35:48+00:00"
+            "time": "2024-09-23T17:20:25+00:00"
         },
         {
             "name": "paragonie/constant_time_encoding",
@@ -7718,16 +7718,16 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "1.11.10",
+            "version": "1.12.16",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "640410b32995914bde3eed26fa89552f9c2c082f"
+                "reference": "e0bb5cb78545aae631220735aa706eac633a6be9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/640410b32995914bde3eed26fa89552f9c2c082f",
-                "reference": "640410b32995914bde3eed26fa89552f9c2c082f",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/e0bb5cb78545aae631220735aa706eac633a6be9",
+                "reference": "e0bb5cb78545aae631220735aa706eac633a6be9",
                 "shasum": ""
             },
             "require": {
@@ -7772,25 +7772,25 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-08-08T09:02:50+00:00"
+            "time": "2025-01-21T14:50:05+00:00"
         },
         {
             "name": "rector/rector",
-            "version": "1.2.3",
+            "version": "1.2.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/rectorphp/rector.git",
-                "reference": "2433e95410aef1b34b15d7f1b6a134365a4ddb39"
+                "reference": "40f9cf38c05296bd32f444121336a521a293fa61"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/rectorphp/rector/zipball/2433e95410aef1b34b15d7f1b6a134365a4ddb39",
-                "reference": "2433e95410aef1b34b15d7f1b6a134365a4ddb39",
+                "url": "https://api.github.com/repos/rectorphp/rector/zipball/40f9cf38c05296bd32f444121336a521a293fa61",
+                "reference": "40f9cf38c05296bd32f444121336a521a293fa61",
                 "shasum": ""
             },
             "require": {
                 "php": "^7.2|^8.0",
-                "phpstan/phpstan": "^1.11.9"
+                "phpstan/phpstan": "^1.12.5"
             },
             "conflict": {
                 "rector/rector-doctrine": "*",
@@ -7823,7 +7823,7 @@
             ],
             "support": {
                 "issues": "https://github.com/rectorphp/rector/issues",
-                "source": "https://github.com/rectorphp/rector/tree/1.2.3"
+                "source": "https://github.com/rectorphp/rector/tree/1.2.10"
             },
             "funding": [
                 {
@@ -7831,7 +7831,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-08-12T16:36:46+00:00"
+            "time": "2024-11-08T13:59:10+00:00"
         },
         {
             "name": "symfony/polyfill-php80",
@@ -8065,9 +8065,9 @@
     "platform": {
         "php": "^8.2"
     },
-    "platform-dev": [],
+    "platform-dev": {},
     "platform-overrides": {
         "php": "8.2"
     },
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.6.0"
 }

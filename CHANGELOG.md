@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Fixed a bug where toolbar menus weren’t usable within slideouts. ([#345](https://github.com/craftcms/ckeditor/issues/345))
 - Fixed a bug where “Edit entry” buttons were only partially translated. ([#337](https://github.com/craftcms/ckeditor/issues/337))
 - Fixed a bug where copying and pasting nested entries wasn’t working on non-primary sites. ([#315](https://github.com/craftcms/ckeditor/issues/315))
 - Fixed an error that could occur when editing nested entries on newly-created provisional drafts. ([#339](https://github.com/craftcms/ckeditor/pull/339))

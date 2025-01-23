@@ -1,6 +1,6 @@
 # Release Notes for CKEditor for Craft CMS
 
-## Unreleased
+## 3.11.0 - 2025-01-23
 
 - CKEditor fields no longer have extra bottom padding, and the CKEditor logo is now displayed over the bottom border. ([#252](https://github.com/craftcms/ckeditor/pull/252))
 - Added the ability to show the “Source” button for specific user groups. ([#318](https://github.com/craftcms/ckeditor/pull/318))

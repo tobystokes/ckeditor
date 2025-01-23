@@ -1,8 +1,20 @@
 # Release Notes for CKEditor for Craft CMS
 
-## Unreleased
+## 3.10.0 - 2024-10-19
 
+- Image toolbars now include an “Edit Image” button. ([#253](https://github.com/craftcms/ckeditor/issues/253))
+- The `ckeditor/convert/redactor` command now ensures that it’s being run interactively.
+- CKEditor container divs now have `data-config` attributes, set to the CKEditor config’s handle. ([#284](https://github.com/craftcms/ckeditor/issues/284))
+- Fixed a bug where page breaks were being lost.
+- Fixed a bug where menus within overflown toolbar items weren’t fully visible. ([#286](https://github.com/craftcms/ckeditor/issues/286))
+
+## 3.9.0 - 2024-08-15
+
+- CKEditor configs created via the `ckeditor/convert` command now allow modifying HTML attributes, classes, and styles within the source view, if the Redactor config included the `html` button. ([#264](https://github.com/craftcms/ckeditor/pull/264), [#263](https://github.com/craftcms/ckeditor/issues/263))
 - Added `craft\ckeditor\events\ModifyConfigEvent::$toolbar`. ([#233](https://github.com/craftcms/ckeditor/pull/233))
+- Fixed a bug where code blocks created by a Redactor field only had `<pre>` tags with no `<code>` tags inside them. ([#258](https://github.com/craftcms/ckeditor/issues/258))
+- Fixed a bug where dropdown menus didn’t have a maximum height. ([#268](https://github.com/craftcms/ckeditor/issues/268))
+- Fixed a bug where word counts weren’t handling unicode characters correctly. ([#275](https://github.com/craftcms/ckeditor/issues/275))
 
 ## 3.8.3 - 2024-03-28
 

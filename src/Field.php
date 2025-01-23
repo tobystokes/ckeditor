@@ -209,7 +209,7 @@ class Field extends HtmlField
                     $value = strip_tags((string)$element->getFieldValue($this->handle));
                     if (
                         // regex copied from the WordCount plugin, for consistency
-                        preg_match_all('/(?:[\p{L}\p{N}]+\S?)+/', $value, $matches) &&
+                        preg_match_all('/(?:[\p{L}\p{N}]+\S?)+/u', $value, $matches) &&
                         count($matches[0]) > $this->wordLimit
                     ) {
                         $element->addError(
@@ -342,6 +342,8 @@ class Field extends HtmlField
                     ...(!empty($transforms) ? ['transformImage', '|'] : []),
                     'toggleImageCaption',
                     'imageTextAlternative',
+                    '|',
+                    'imageEditor',
                 ],
             ],
             'assetSources' => $this->_assetSources(),
@@ -477,6 +479,9 @@ JS,
             'class' => array_filter([
                 $this->showWordCount ? 'ck-with-show-word-count' : null,
             ]),
+            'data' => [
+                'config' => $this->ckeConfig,
+            ],
         ]);
     }
 
@@ -536,6 +541,9 @@ JS,
             // Redactor to CKEditor syntax for <figure>
             // (https://github.com/craftcms/ckeditor/issues/96)
             $value = $this->_normalizeFigures($value);
+            // Redactor to CKEditor syntax for <pre>
+            // (https://github.com/craftcms/ckeditor/issues/258)
+            $value = $this->_normalizePreTags($value);
         }
 
         return parent::prepValueForInput($value, $element);
@@ -550,13 +558,44 @@ JS,
             $value = $value->getRawContent();
         }
 
-        if ($value !== null) {
-            // Redactor to CKEditor syntax for <figure>
-            // (https://github.com/craftcms/ckeditor/issues/96)
-            $value = $this->_normalizeFigures($value);
+        if (!$value) {
+            return null;
         }
 
-        return parent::serializeValue($value, $element);
+        // Redactor to CKEditor syntax for <figure>
+        // (https://github.com/craftcms/ckeditor/issues/96)
+        $value = $this->_normalizeFigures($value);
+        // Redactor to CKEditor syntax for <pre>
+        // (https://github.com/craftcms/ckeditor/issues/258)
+        $value = $this->_normalizePreTags($value);
+
+        // Protect page breaks
+        $this->escapePageBreaks($value);
+        $value = parent::serializeValue($value, $element);
+        return str_replace(
+            '{PAGEBREAK_MARKER}',
+            '<div class="page-break" style="page-break-after:always;"><span style="display:none;">&nbsp;</span></div>',
+            $value,
+        );
+    }
+
+    private function escapePageBreaks(string &$html): void
+    {
+        $offset = 0;
+        $r = '';
+
+        while (($pos = stripos($html, '<div class="page-break"', $offset)) !== false) {
+            $endPos = strpos($html, '</div>', $pos + 23);
+            if ($endPos === false) {
+                break;
+            }
+            $r .= substr($html, $offset, $pos - $offset) . '{PAGEBREAK_MARKER}';
+            $offset = $endPos + 6;
+        }
+
+        if ($offset !== 0) {
+            $html = $r . substr($html, $offset);
+        }
     }
 
     /**
@@ -614,6 +653,39 @@ JS,
             },
             $value,
         );
+
+        return $value;
+    }
+
+    /**
+     * Normalizes <pre> tags, ensuring they have a <code> tag inside them.
+     * If there's no <code> tag in there, ensure it's added with class="language-plaintext".
+     *
+     * @param string $value
+     * @return string
+     */
+    private function _normalizePreTags(string $value): string
+    {
+        $offset = 0;
+        while (preg_match('/<pre\b[^>]*>\s*(.*?)<\/pre>/is', $value, $match, PREG_OFFSET_CAPTURE, $offset)) {
+            /** @var int $startPos */
+            $startPos = $match[1][1];
+            $endPos = $startPos + strlen($match[1][0]);
+            $preContent = $match[1][0];
+
+            // if there's already a <code tag inside, leave it alone and carry on
+            if (str_starts_with($preContent, '<code')) {
+                $offset = $startPos + strlen($preContent);
+                continue;
+            }
+
+            $preContent = Html::tag('code', $preContent, [
+                'class' => 'language-plaintext',
+            ]);
+
+            $value = substr($value, 0, $startPos) . $preContent . substr($value, $endPos);
+            $offset = $startPos + strlen($preContent);
+        }
 
         return $value;
     }

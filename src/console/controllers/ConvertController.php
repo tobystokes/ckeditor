@@ -166,6 +166,11 @@ class ConvertController extends Controller
      */
     public function actionRedactor(): int
     {
+        if (!$this->interactive) {
+            $this->stderr("This command must be run interactively.\n");
+            return ExitCode::UNSPECIFIED_ERROR;
+        }
+
         $this->projectConfig = Craft::$app->getProjectConfig();
 
         // Find Redactor fields
@@ -207,7 +212,7 @@ class ConvertController extends Controller
                         throw new Exception('`manualConfig` contains invalid JSON.');
                     }
                     $configName = $field['name'] ?? (!empty($field['handle']) ? Inflector::camel2words($field['handle']) : 'Untitled');
-                    $ckeConfig = $this->generateCkeConfig($configName, $redactorConfig, $ckeConfigs, $fieldSettingsByConfig);
+                    $ckeConfig = $this->generateCkeConfig($configName, $redactorConfig, $ckeConfigs, $fieldSettingsByConfig, $field);
                     $this->stdout(PHP_EOL);
                 } else {
                     $basename = ($field['settings']['redactorConfig'] ?? $field['settings']['configFile'] ?? null) ?: 'Default.json';
@@ -251,6 +256,9 @@ class ConvertController extends Controller
         }
 
         $this->stdout("\n ✓ Finished converting Redactor fields.\n", Console::FG_GREEN, Console::BOLD);
+        $this->stdout("\nCommit your project config changes, 
+and run `craft up` on other environments
+for the changes to take effect.\n", Console::FG_GREEN);
 
         return ExitCode::OK;
     }
@@ -347,6 +355,7 @@ class ConvertController extends Controller
         array $redactorConfig,
         array &$ckeConfigs,
         array &$fieldSettingsByConfig,
+        ?array $redactorField = null,
     ): string {
         // Make sure the name is unique
         $baseConfigName = $configName;
@@ -667,6 +676,22 @@ class ConvertController extends Controller
                     }
                 }
             }
+        }
+
+        // if we added sourceEditing button, then to align with what Redactor allowed,
+        // we need add this predefined htmlSupport.allow config
+        if ($ckeConfig->hasButton('sourceEditing')) {
+            $htmlSupport = [
+                'attributes' => true,
+                'classes' => true,
+                'styles' => true,
+            ];
+
+            if ($redactorField !== null && $redactorField['settings']['removeInlineStyles']) {
+                unset($htmlSupport['styles']);
+            }
+
+            $ckeConfig->options['htmlSupport']['allow'][] = $htmlSupport;
         }
 
         // redactor-link-styles

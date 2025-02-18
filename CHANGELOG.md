@@ -3,6 +3,8 @@
 ## Unreleased
 
 - Added the ability to override entry type names and handles for CKEditor fields. ([#365](https://github.com/craftcms/ckeditor/issues/365))
+- CKEditor fields now show provisional drafts for nested entries when previewing an owner element. ([#340](https://github.com/craftcms/ckeditor/pull/340))
+- Fixed an error that occurred if the “Who should see the ‘Source’ button?” field setting was totally blank. ([#359](https://github.com/craftcms/ckeditor/issues/359))
 
 ## 4.5.0 - 2025-01-23
 

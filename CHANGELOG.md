@@ -1,6 +1,6 @@
 # Release Notes for CKEditor for Craft CMS
 
-## Unreleased
+## 4.6.0 - 2025-02-18
 
 - Added the ability to override entry type names and handles for CKEditor fields. ([#369](https://github.com/craftcms/ckeditor/discussions/369))
 - CKEditor fields now show provisional drafts for nested entries when previewing an owner element. ([#340](https://github.com/craftcms/ckeditor/pull/340))

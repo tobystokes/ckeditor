@@ -1,5 +1,9 @@
 # Release Notes for CKEditor for Craft CMS
 
+## Unreleased
+
+- Fixed an error that occurred if the “Who should see the ‘Source’ button?” field setting was totally blank. ([#359](https://github.com/craftcms/ckeditor/issues/359))
+
 ## 3.11.0 - 2025-01-23
 
 - CKEditor fields no longer have extra bottom padding, and the CKEditor logo is now displayed over the bottom border. ([#252](https://github.com/craftcms/ckeditor/pull/252))

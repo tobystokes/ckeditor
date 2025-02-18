@@ -1,5 +1,9 @@
 # Release Notes for CKEditor for Craft CMS
 
+## Unreleased
+
+- CKEditor fields now show provisional drafts for nested entries when previewing an owner element. ([#340](https://github.com/craftcms/ckeditor/pull/340))
+
 ## 4.5.0 - 2025-01-23
 
 - CKEditor now requires Craft CMS 5.6+.

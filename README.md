@@ -236,3 +236,6 @@ Finally, ensure your asset bundle is registered whenever the core CKEditor asset
 ```php
 \craft\ckeditor\Plugin::registerCkeditorPackage(TokensAsset::class);
 ```
+
+## Font-end use
+If you wish to use CKEditor on the front end, the safest option is to bring your own CKE build. Though Craft’s build uses GPL3 license, it has a lot of CP-dependent functionality, which means it would most likely be buggy if used on the front-end.

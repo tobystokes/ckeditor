@@ -36,17 +36,42 @@
   {% endblock %}
 {% endembed %}
 
-{{ forms.textField({
-  id: 'word-limit',
-  name: 'wordLimit',
-  label: 'Word Limit'|t('ckeditor'),
-  value: field.wordLimit,
-  type: 'number',
-  min: 0,
-  step: 1,
-  size: 5,
-  errors: field.getErrors('wordLimit'),
+<div id="word-limit-container">
+  {{ forms.textField({
+    id: 'word-limit',
+    name: 'wordLimit',
+    label: 'Word Limit'|t('ckeditor'),
+    value: field.wordLimit,
+    type: 'number',
+    min: 0,
+    step: 1,
+    size: 5,
+    errors: field.getErrors('wordLimit'),
+  }) }}
+</div>
+
+{{ forms.lightswitchField({
+  id: 'use-character-limit',
+  name: 'useCharacterLimit',
+  label: 'Use character limit'|t('ckeditor'),
+  on: field.useCharacterLimit,
+  toggle: 'character-limit-container',
+  reverseToggle: 'word-limit-container'
 }) }}
+
+<div id="character-limit-container">
+  {{ forms.textField({
+    id: 'character-limit',
+    name: 'characterLimit',
+    label: 'Character Limit'|t('ckeditor'),
+    value: field.characterLimit,
+    type: 'number',
+    min: 0,
+    step: 1,
+    size: 5,
+    errors: field.getErrors('characterLimit'),
+  }) }}
+</div>
 
 {{ forms.lightswitchField({
   id: 'show-word-count',

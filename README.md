@@ -237,7 +237,7 @@ Finally, ensure your asset bundle is registered whenever the core CKEditor asset
 \craft\ckeditor\Plugin::registerCkeditorPackage(TokensAsset::class);
 ```
 
-## Font-end use
+## Front-end use
 
 If you wish to use CKEditor on the front end, the safest option is to [bring your own CKE build](https://ckeditor.com/docs/ckeditor5/latest/getting-started/installation/self-hosted/quick-start.html). Craft’s bundle (while technically allowed under the GPL3 license) is not suitable for front-end use, due to its control panel-dependent functionality. Simple [configurations](#configuration) defined via the control panel _can_ be used piecemeal in your initializer:
 

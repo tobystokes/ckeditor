@@ -498,7 +498,13 @@ class Field extends HtmlField implements ElementContainerFieldInterface, Mergeab
         if ($this->wordLimit) {
             $rules[] = [
                 function(ElementInterface $element) {
-                    $value = strip_tags((string)$element->getFieldValue($this->handle));
+                    $value = html_entity_decode((string)$element->getFieldValue($this->handle));
+                    $value = preg_replace(
+                        ['/<br>/', '/></'],
+                        [' ', '/> </'],
+                        $value
+                    );
+                    $value = strip_tags($value);
                     if (
                         // regex copied from the WordCount plugin, for consistency
                         preg_match_all('/(?:[\p{L}\p{N}]+\S?)+/u', $value, $matches) &&
@@ -788,6 +794,8 @@ class Field extends HtmlField implements ElementContainerFieldInterface, Mergeab
             'attributes' => [
                 'class' => array_filter([$isRevision ? 'cke-entry-card' : null]),
             ],
+            'hyperlink' => false,
+            'showEditButton' => false,
         ]);
     }
 
@@ -992,6 +1000,7 @@ JS;
 
         $view->registerJs(<<<JS
 (($) => {
+  let instance;
   const config = Object.assign($baseConfigJs, $configOptionsJs);
   if (!jQuery.isPlainObject(config.toolbar)) {
     config.toolbar = {};
@@ -1041,7 +1050,7 @@ JS;
     }
     config.removePlugins.push(...extraRemovePlugins);
   }
-  CKEditor5.craftcms.create($idJs, config);
+  instance = CKEditor5.craftcms.create($idJs, config);
 })(jQuery)
 JS,
             View::POS_END,

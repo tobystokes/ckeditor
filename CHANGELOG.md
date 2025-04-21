@@ -1,6 +1,6 @@
 # Release Notes for CKEditor for Craft CMS
 
-## Unreleased
+## 4.7.0 - 2025-04-21
 
 - Nested entry cards no longer have edit buttons within their toolbars, or hyperlink their titles. ([#387](https://github.com/craftcms/ckeditor/pull/387))
 - JavaScript-based CKEditor configs can now access the CKEditor instance via an `instance` variable. ([#385](https://github.com/craftcms/ckeditor/pull/385))

@@ -93,6 +93,10 @@ a.ck.ck-button:focus {
 }
 
 /* content */
+.ck.ck-content {
+  color: var(--text-color);
+}
+
 .ck.ck-content ul:last-child,
 .ck.ck-content ol:last-child {
   padding-bottom: 0 !important;

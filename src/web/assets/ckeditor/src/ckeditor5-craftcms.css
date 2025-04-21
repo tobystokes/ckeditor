@@ -166,6 +166,10 @@ a.ck.ck-button:focus {
 .so-body .ck.ck-toolbar-dropdown > .ck-dropdown__panel {
   width: 100%;
 }
+
+.so-body .ck.ck-editor .ck-editor__top .ck-sticky-panel .ck-toolbar {
+  z-index: auto;
+}
 /* end fix */
 
 /* patch in https://github.com/ckeditor/ckeditor5/pull/15795 */

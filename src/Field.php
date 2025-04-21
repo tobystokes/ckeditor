@@ -794,6 +794,8 @@ class Field extends HtmlField implements ElementContainerFieldInterface, Mergeab
             'attributes' => [
                 'class' => array_filter([$isRevision ? 'cke-entry-card' : null]),
             ],
+            'hyperlink' => false,
+            'showEditButton' => false,
         ]);
     }
 

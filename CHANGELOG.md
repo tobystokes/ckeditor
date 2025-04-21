@@ -3,6 +3,7 @@
 ## Unreleased
 
 - Fixed a bug where expanded toolbar menus could be masked by a subsequent CKEditor field’s toolbar. ([#376](https://github.com/craftcms/ckeditor/issues/376))
+- Fixed a bug where back-end word limit validation wasn’t handling multiple words separated only by HTML tags properly. ([#383](https://github.com/craftcms/ckeditor/pull/383))
 
 ## 4.6.0 - 2025-02-18
 

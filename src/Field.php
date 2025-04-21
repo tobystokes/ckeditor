@@ -498,7 +498,13 @@ class Field extends HtmlField implements ElementContainerFieldInterface, Mergeab
         if ($this->wordLimit) {
             $rules[] = [
                 function(ElementInterface $element) {
-                    $value = strip_tags((string)$element->getFieldValue($this->handle));
+                    $value = html_entity_decode((string)$element->getFieldValue($this->handle));
+                    $value = preg_replace(
+                        ['/<br>/', '/></'],
+                        [' ', '/> </'],
+                        $value
+                    );
+                    $value = strip_tags($value);
                     if (
                         // regex copied from the WordCount plugin, for consistency
                         preg_match_all('/(?:[\p{L}\p{N}]+\S?)+/u', $value, $matches) &&

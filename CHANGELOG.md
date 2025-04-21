@@ -1,5 +1,9 @@
 # Release Notes for CKEditor for Craft CMS
 
+## Unreleased
+
+- Fixed a bug where expanded toolbar menus could be masked by a subsequent CKEditor field’s toolbar. ([#376](https://github.com/craftcms/ckeditor/issues/376))
+
 ## 3.11.1 - 2025-02-18
 
 - Fixed an error that occurred if the “Who should see the ‘Source’ button?” field setting was totally blank. ([#359](https://github.com/craftcms/ckeditor/issues/359))

@@ -1,5 +1,11 @@
 # Release Notes for CKEditor for Craft CMS
 
+## 3.12.0 - 2025-04-21
+
+- JavaScript-based CKEditor configs can now access the CKEditor instance via an `instance` variable. ([#385](https://github.com/craftcms/ckeditor/pull/385))
+- Fixed a bug where expanded toolbar menus could be masked by a subsequent CKEditor field’s toolbar. ([#376](https://github.com/craftcms/ckeditor/issues/376))
+- Fixed a bug where back-end word limit validation wasn’t handling multiple words separated only by HTML tags properly. ([#383](https://github.com/craftcms/ckeditor/pull/383))
+
 ## 3.11.1 - 2025-02-18
 
 - Fixed an error that occurred if the “Who should see the ‘Source’ button?” field setting was totally blank. ([#359](https://github.com/craftcms/ckeditor/issues/359))

@@ -36,6 +36,8 @@
   --ck-powered-by-line-height: 8px;
   --ck-powered-by-padding-vertical: 0px;
   --ck-powered-by-padding-horizontal: 0px;
+  --ck-color-base-background: var(--input-bg) !important;
+  --ck-color-toolbar-background: var(--white) !important;
 }
 
 .ck.ck-sticky-panel .ck-sticky-panel__content_sticky .ck.ck-toolbar {

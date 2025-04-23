@@ -1,5 +1,9 @@
 # Release Notes for CKEditor for Craft CMS
 
+## Unreleased
+
+- Improved the styling of CKEditor fields. ([craftcms/cms#17164](https://github.com/craftcms/cms/discussions/17164))
+
 ## 4.7.0 - 2025-04-21
 
 - Nested entry cards no longer have edit buttons within their toolbars, or hyperlink their titles. ([#387](https://github.com/craftcms/ckeditor/pull/387))

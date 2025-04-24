@@ -119,14 +119,8 @@ class Field extends HtmlField
     public ?int $wordLimit = null;
 
     /**
-     * @var bool Whether the character limit should be used instead of the word limit.
-     * @since 3.11.2
-     */
-    public bool $useCharacterLimit = false;
-
-    /**
      * @var int|null The total number of characters allowed.
-     * @since 3.11.2
+     * @since 3.12.1
      */
     public ?int $characterLimit = null;
 
@@ -191,6 +185,15 @@ class Field extends HtmlField
             $config['sourceEditingGroups'] = null;
         }
 
+        if (isset($config['limitUnit'], $config['fieldLimit'])) {
+            if ($config['limitUnit'] === 'chars') {
+                $config['characterLimit'] = (int)$config['fieldLimit'] ?: null;
+            } else {
+                $config['wordLimit'] = (int)$config['fieldLimit'] ?: null;
+            }
+            unset($config['limitUnit'], $config['fieldLimit']);
+        }
+
         parent::__construct($config);
     }
 
@@ -227,7 +230,7 @@ class Field extends HtmlField
     {
         $rules = [];
 
-        if ($this->useCharacterLimit && $this->characterLimit) {
+        if ($this->characterLimit) {
             $rules[] = [
                 function(ElementInterface $element) {
                     $value = strip_tags((string)$element->getFieldValue($this->handle));
@@ -463,7 +466,7 @@ JS;
         $showWordCountJs = Json::encode($this->showWordCount);
         $wordLimitJs = 0;
         $characterLimitJs = 0;
-        if ($this->useCharacterLimit && $this->characterLimit) {
+        if ($this->characterLimit) {
             $characterLimitJs = $this->characterLimit;
         } elseif ($this->wordLimit) {
             $wordLimitJs = $this->wordLimit;

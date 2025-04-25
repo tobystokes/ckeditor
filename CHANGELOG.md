@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- The “Anchors” CKEditor plugin has been replaced with CKEditor’s new built-in [Bookmarks](https://ckeditor.com/docs/ckeditor5/latest/features/bookmarks.html) plugin. ([#397](https://github.com/craftcms/ckeditor/pull/397))
+- Updated to CKEditor 5 45.0.0. ([#397](https://github.com/craftcms/ckeditor/pull/397))
+
 - Improved the styling of CKEditor fields. ([craftcms/cms#17164](https://github.com/craftcms/cms/discussions/17164))
 
 ## 4.7.0 - 2025-04-21

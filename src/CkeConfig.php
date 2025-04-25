@@ -70,6 +70,14 @@ class CkeConfig extends Model
 
     public function __construct($config = [])
     {
+        if (isset($config['toolbar'])) {
+            // anchor → bookmark
+            $key = array_search('anchor', $config['toolbar']);
+            if ($key !== false) {
+                $config['toolbar'][$key] = 'bookmark';
+            }
+        }
+
         if (!array_key_exists('options', $config)) {
             // Only use `json` or `js`, not both
             if (!empty($config['json'])) {

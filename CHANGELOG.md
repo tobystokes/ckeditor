@@ -1,5 +1,10 @@
 # Release Notes for CKEditor for Craft CMS
 
+## Unreleased
+
+- The “Anchors” CKEditor plugin has been replaced with CKEditor’s new built-in [Bookmarks](https://ckeditor.com/docs/ckeditor5/latest/features/bookmarks.html) plugin. ([#397](https://github.com/craftcms/ckeditor/pull/397))
+- Updated to CKEditor 5 45.0.0. ([#397](https://github.com/craftcms/ckeditor/pull/397))
+
 ## 3.12.0 - 2025-04-21
 
 - JavaScript-based CKEditor configs can now access the CKEditor instance via an `instance` variable. ([#385](https://github.com/craftcms/ckeditor/pull/385))

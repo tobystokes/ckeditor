@@ -14,6 +14,7 @@ import {
   ImageToolbar,
 } from '@ckeditor/ckeditor5-image';
 import {Autoformat} from '@ckeditor/ckeditor5-autoformat';
+import {Bookmark} from '@ckeditor/ckeditor5-bookmark';
 import {BlockQuote} from '@ckeditor/ckeditor5-block-quote';
 import {
   Bold,
@@ -61,19 +62,18 @@ import ImageEditor from './image/imageeditor';
 import {TextPartLanguage} from '@ckeditor/ckeditor5-language';
 import CraftEntries from './entries/entries';
 import CKEditorInspector from '@ckeditor/ckeditor5-inspector';
-import {Anchor} from '@northernco/ckeditor5-anchor-drupal';
 
 const allPlugins = [
   CKEditor5.paragraph.Paragraph,
   CKEditor5.selectAll.SelectAll,
   CKEditor5.clipboard.Clipboard,
   Alignment,
-  Anchor,
   AutoImage,
   AutoLink,
   Autoformat,
   BlockQuote,
   Bold,
+  Bookmark,
   Code,
   CodeBlock,
   List,
@@ -149,7 +149,7 @@ export const toolbarItems = normalizeToolbarItems([
   'superscript',
   'code',
   'link',
-  'anchor',
+  'bookmark',
   'textPartLanguage',
   {button: 'fontSize', configOption: 'fontSize'},
   'fontFamily',
@@ -177,7 +177,6 @@ export const toolbarItems = normalizeToolbarItems([
 
 const pluginButtonMap = [
   {plugins: ['Alignment'], buttons: ['alignment']},
-  {plugins: ['Anchor'], buttons: ['anchor']},
   {
     plugins: [
       'AutoImage',
@@ -198,6 +197,7 @@ const pluginButtonMap = [
   },
   {plugins: ['BlockQuote'], buttons: ['blockQuote']},
   {plugins: ['Bold'], buttons: ['bold']},
+  {plugins: ['Bookmark'], buttons: ['bookmark']},
   {plugins: ['Code'], buttons: ['code']},
   {plugins: ['CodeBlock'], buttons: ['codeBlock']},
   {

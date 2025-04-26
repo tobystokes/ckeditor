@@ -78,7 +78,7 @@ class CkeConfig extends Model implements Chippable, Actionable
 
     public function __construct($config = [])
     {
-        if (isset($config['toolbar'])) {
+        if (isset($config['toolbar']) && is_array($config['toolbar'])) {
             // anchor → bookmark
             $key = array_search('anchor', $config['toolbar']);
             if ($key !== false) {

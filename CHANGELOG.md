@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+- The “Anchors” CKEditor plugin has been replaced with CKEditor’s new built-in [Bookmarks](https://ckeditor.com/docs/ckeditor5/latest/features/bookmarks.html) plugin. ([#397](https://github.com/craftcms/ckeditor/pull/397))
+- Updated to CKEditor 5 45.0.0. ([#397](https://github.com/craftcms/ckeditor/pull/397))
+
+## 3.12.0 - 2025-04-21
+
+- JavaScript-based CKEditor configs can now access the CKEditor instance via an `instance` variable. ([#385](https://github.com/craftcms/ckeditor/pull/385))
 - Fixed a bug where expanded toolbar menus could be masked by a subsequent CKEditor field’s toolbar. ([#376](https://github.com/craftcms/ckeditor/issues/376))
 - Fixed a bug where back-end word limit validation wasn’t handling multiple words separated only by HTML tags properly. ([#383](https://github.com/craftcms/ckeditor/pull/383))
 

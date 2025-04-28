@@ -474,6 +474,7 @@ JS;
 
         $view->registerJs(<<<JS
 (($) => {
+  let instance;
   const config = Object.assign($baseConfigJs, $configOptionsJs);
   if (!jQuery.isPlainObject(config.toolbar)) {
     config.toolbar = {};
@@ -532,7 +533,7 @@ JS;
     }
     config.removePlugins.push(...extraRemovePlugins);
   }
-  CKEditor5.craftcms.create($idJs, config);
+  instance = CKEditor5.craftcms.create($idJs, config);
 })(jQuery)
 JS,
             View::POS_END,

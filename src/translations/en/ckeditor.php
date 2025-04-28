@@ -41,7 +41,6 @@ return [
     'Toolbar' => 'Toolbar',
     'View available settings' => 'View available settings',
     'Who should see the “Source” button?' => 'Who should see the “Source” button?',
-    'Word Limit' => 'Word Limit',
     'Words' => 'Words',
     'You can save custom {name} configs as {ext} files in {path}.' => 'You can save custom {name} configs as {ext} files in {path}.',
     'Your JavaScript config contains functions. If you switch to JSON, they will be lost. Would you like to continue?',

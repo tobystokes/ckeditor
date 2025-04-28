@@ -120,7 +120,7 @@ class Field extends HtmlField
 
     /**
      * @var int|null The total number of characters allowed.
-     * @since 3.12.1
+     * @since 3.13.0
      */
     public ?int $characterLimit = null;
 

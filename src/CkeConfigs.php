@@ -29,7 +29,6 @@ class CkeConfigs extends Component
         $configArrs = Craft::$app->getProjectConfig()->get(self::PROJECT_CONFIG_PATH) ?? [];
 
         foreach ($configArrs as $uid => $configArr) {
-            $configArr = $this->_adjustConfig($configArr);
             $configs[] = new CkeConfig($configArr + ['uid' => $uid]);
         }
 
@@ -47,8 +46,6 @@ class CkeConfigs extends Component
         if ($config === null) {
             throw new InvalidArgumentException("Invalid CKEditor config UUID: $uid");
         }
-
-        $config = $this->_adjustConfig($config);
 
         return new CkeConfig($config + ['uid' => $uid]);
     }
@@ -82,22 +79,5 @@ class CkeConfigs extends Component
     private function _pcPath(string $uid): string
     {
         return sprintf('%s.%s', self::PROJECT_CONFIG_PATH, $uid);
-    }
-
-    /**
-     * Adjust the config.
-     *
-     * @param array $config
-     * @return array
-     */
-    private function _adjustConfig(array $config): array
-    {
-        // rewrite anchor toolbar item to bookmark
-        $key = array_search('anchor', $config['toolbar']);
-        if ($key !== false) {
-            $config['toolbar'][$key] = 'bookmark';
-        }
-
-        return $config;
     }
 }

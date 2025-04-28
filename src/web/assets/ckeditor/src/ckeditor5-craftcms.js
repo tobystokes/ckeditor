@@ -14,7 +14,6 @@ import {
   ImageToolbar,
 } from '@ckeditor/ckeditor5-image';
 import {Autoformat} from '@ckeditor/ckeditor5-autoformat';
-import {Bookmark} from '@ckeditor/ckeditor5-bookmark';
 import {BlockQuote} from '@ckeditor/ckeditor5-block-quote';
 import {
   Bold,
@@ -25,6 +24,7 @@ import {
   Superscript,
   Underline,
 } from '@ckeditor/ckeditor5-basic-styles';
+import {Bookmark} from '@ckeditor/ckeditor5-bookmark';
 import {ClassicEditor} from '@ckeditor/ckeditor5-editor-classic';
 import {CodeBlock} from '@ckeditor/ckeditor5-code-block';
 import {Essentials} from '@ckeditor/ckeditor5-essentials';

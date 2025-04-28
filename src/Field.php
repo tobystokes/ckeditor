@@ -119,6 +119,12 @@ class Field extends HtmlField
     public ?int $wordLimit = null;
 
     /**
+     * @var int|null The total number of characters allowed.
+     * @since 3.13.0
+     */
+    public ?int $characterLimit = null;
+
+    /**
      * @var bool Whether the word count should be shown below the field.
      * @since 3.2.0
      */
@@ -179,6 +185,15 @@ class Field extends HtmlField
             $config['sourceEditingGroups'] = null;
         }
 
+        if (isset($config['limitUnit'], $config['fieldLimit'])) {
+            if ($config['limitUnit'] === 'chars') {
+                $config['characterLimit'] = (int)$config['fieldLimit'] ?: null;
+            } else {
+                $config['wordLimit'] = (int)$config['fieldLimit'] ?: null;
+            }
+            unset($config['limitUnit'], $config['fieldLimit']);
+        }
+
         parent::__construct($config);
     }
 
@@ -192,6 +207,9 @@ class Field extends HtmlField
         if ($this->wordLimit === 0) {
             $this->wordLimit = null;
         }
+        if ($this->characterLimit === 0) {
+            $this->characterLimit = null;
+        }
     }
 
     /**
@@ -201,6 +219,7 @@ class Field extends HtmlField
     {
         return array_merge(parent::defineRules(), [
             ['wordLimit', 'number', 'min' => 1],
+            ['characterLimit', 'number', 'min' => 1],
         ]);
     }
 
@@ -211,7 +230,22 @@ class Field extends HtmlField
     {
         $rules = [];
 
-        if ($this->wordLimit) {
+        if ($this->characterLimit) {
+            $rules[] = [
+                function(ElementInterface $element) {
+                    $value = strip_tags((string)$element->getFieldValue($this->handle));
+                    if (strlen($value) > $this->characterLimit) {
+                        $element->addError(
+                            "field:$this->handle",
+                            Craft::t('ckeditor', '{field} should contain at most {max, number} {max, plural, one{character} other{characters}}.', [
+                                'field' => Craft::t('site', $this->name),
+                                'max' => $this->characterLimit,
+                            ]),
+                        );
+                    }
+                },
+            ];
+        } elseif ($this->wordLimit) {
             $rules[] = [
                 function(ElementInterface $element) {
                     $value = html_entity_decode((string)$element->getFieldValue($this->handle));
@@ -430,7 +464,13 @@ JS;
             'textPartLanguage' => static::textPartLanguage(),
         ]);
         $showWordCountJs = Json::encode($this->showWordCount);
-        $wordLimitJs = $this->wordLimit ?: 0;
+        $wordLimitJs = 0;
+        $characterLimitJs = 0;
+        if ($this->characterLimit) {
+            $characterLimitJs = $this->characterLimit;
+        } elseif ($this->wordLimit) {
+            $wordLimitJs = $this->wordLimit;
+        }
 
         $view->registerJs(<<<JS
 (($) => {
@@ -468,6 +508,15 @@ JS;
         if (stats.words > $wordLimitJs) {
           container.addClass('error');
         } else if (stats.words >= Math.floor($wordLimitJs * .9)) {
+          container.addClass('warning');
+        } else {
+          container.removeClass('error warning');
+        }
+      }
+      if ($characterLimitJs) {
+        if (stats.characters > $characterLimitJs) {
+          container.addClass('error');
+        } else if (stats.characters >= Math.floor($characterLimitJs * .9)) {
           container.addClass('warning');
         } else {
           container.removeClass('error warning');

@@ -63,9 +63,7 @@ export default class CraftEntryTypesButtonView extends View {
     if (textButtons.length > 0) {
       const dropdownView = createDropdown(locale);
       dropdownView.buttonView.set({
-        label:
-          this.editor.config.get('createButtonLabel') ||
-          Craft.t('ckeditor', 'Add nested content'),
+        label: Craft.t('ckeditor', 'Add nested content'),
         icon: IconPlus,
         tooltip: true,
         withText: false,

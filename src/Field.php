@@ -1332,9 +1332,7 @@ JS,
 
     private function defaultCreateButtonLabel(): string
     {
-        return Craft::t('app', 'New {type}', [
-            'type' => Entry::lowerDisplayName(),
-        ]);
+        return Craft::t('ckeditor', 'Add nested content');
     }
 
     /**

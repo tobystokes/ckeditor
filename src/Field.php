@@ -443,7 +443,7 @@ class Field extends HtmlField implements ElementContainerFieldInterface, Mergeab
 
     /**
      * @var bool Whether GraphQL values should be returned as objects with `content`, `chunks`, etc., sub-fields.
-     * @since 4.7.0
+     * @since 4.8.0
      */
     public bool $fullGraphqlData = true;
 

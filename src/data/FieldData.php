@@ -19,7 +19,6 @@ use Illuminate\Support\Collection;
 use IteratorAggregate;
 use Traversable;
 use Twig\Markup as TwigMarkup;
-use yii\base\UnknownPropertyException;
 
 /**
  * Stores the data for CKEditor fields.

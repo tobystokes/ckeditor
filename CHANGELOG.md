@@ -4,8 +4,10 @@
 
 - Added the “Field Limit” field setting, which can be set to a character limit or word limit. ([#384](https://github.com/craftcms/ckeditor/pull/384))
 - Added the “GraphQL Mode” field setting. ([#403](https://github.com/craftcms/ckeditor/pull/403))
+- Editor toolbars now have dedicated nested entry creation buttons, for entry types that have icons. Any entry types that don’t have an icon are now grouped into a “+” menu. ([#404](https://github.com/craftcms/ckeditor/pull/404))
 - Improved the styling of CKEditor fields. ([craftcms/cms#17164](https://github.com/craftcms/cms/discussions/17164))
 - The “Anchors” CKEditor plugin has been replaced with CKEditor’s new built-in [Bookmarks](https://ckeditor.com/docs/ckeditor5/latest/features/bookmarks.html) plugin. ([#397](https://github.com/craftcms/ckeditor/pull/397))
+- Removed the “‘New’ Button Label” field setting. ([#404](https://github.com/craftcms/ckeditor/pull/404))
 - Updated to CKEditor 5 45.0.0. ([#397](https://github.com/craftcms/ckeditor/pull/397))
 - Added `craft\ckeditor\Field::$characterLimit`.
 - Added `craft\ckeditor\Field::$fullGraphqlData`.

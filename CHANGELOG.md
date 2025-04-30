@@ -1,6 +1,6 @@
 # Release Notes for CKEditor for Craft CMS
 
-## Unreleased
+## 3.13.0 - 2025-04-30
 
 - Added the “Field Limit” field setting, which can be set to a character limit or word limit. ([#384](https://github.com/craftcms/ckeditor/pull/384))
 - The “Anchors” CKEditor plugin has been replaced with CKEditor’s new built-in [Bookmarks](https://ckeditor.com/docs/ckeditor5/latest/features/bookmarks.html) plugin. ([#397](https://github.com/craftcms/ckeditor/pull/397))

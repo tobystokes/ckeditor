@@ -1312,6 +1312,7 @@ JS,
         $entryTypeOptions = array_map(
             fn(EntryType $entryType) => [
                 'icon' => $entryType->icon ? Cp::iconSvg($entryType->icon) : null,
+                'color' => $entryType->getColor()?->value,
                 'label' => Craft::t('site', $entryType->name),
                 'value' => $entryType->id,
             ],

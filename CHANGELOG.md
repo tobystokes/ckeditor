@@ -16,6 +16,7 @@
 - Added `craft\ckeditor\gql\CkeditorMarkup`.
 - Added `craft\ckeditor\gql\Generator`.
 - Fixed a bug where it wasn’t easily possible to drag a toolbar button to the last position in the toolbar, if that meant wrapping the buttons to a new row.
+- Fixed a JavaScript error that could prevent the toolbar configurator from loading, when editing a CKEditor config within a slideout. ([#401](https://github.com/craftcms/ckeditor/pull/401))
 
 ## 4.7.0 - 2025-04-21
 

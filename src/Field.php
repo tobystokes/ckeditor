@@ -20,6 +20,7 @@ use craft\ckeditor\data\FieldData;
 use craft\ckeditor\data\Markup;
 use craft\ckeditor\events\DefineLinkOptionsEvent;
 use craft\ckeditor\events\ModifyConfigEvent;
+use craft\ckeditor\gql\Generator;
 use craft\ckeditor\web\assets\BaseCkeditorPackageAsset;
 use craft\ckeditor\web\assets\ckeditor\CkeditorAsset;
 use craft\db\FixedOrderExpression;
@@ -56,6 +57,7 @@ use craft\models\Section;
 use craft\models\Volume;
 use craft\services\ElementSources;
 use craft\web\View;
+use GraphQL\Type\Definition\Type;
 use HTMLPurifier_Config;
 use HTMLPurifier_Exception;
 use HTMLPurifier_HTMLDefinition;
@@ -440,6 +442,12 @@ class Field extends HtmlField implements ElementContainerFieldInterface, Mergeab
     public ?string $createButtonLabel = null;
 
     /**
+     * @var bool Whether GraphQL values should be returned as objects with `content`, `chunks`, etc., sub-fields.
+     * @since 4.8.0
+     */
+    public bool $fullGraphqlData = true;
+
+    /**
      * @var EntryType[] The field’s available entry types
      * @see getEntryTypes()
      * @see setEntryTypes()
@@ -476,6 +484,15 @@ class Field extends HtmlField implements ElementContainerFieldInterface, Mergeab
 
         if (isset($config['entryTypes']) && $config['entryTypes'] === '') {
             $config['entryTypes'] = [];
+        }
+
+        if (isset($config['graphqlMode'])) {
+            $config['fullGraphqlData'] = ArrayHelper::remove($config, 'graphqlMode') === 'full';
+        }
+
+        // Default fullGraphqlData to false for existing fields
+        if (isset($config['id']) && !isset($config['fullGraphqlData'])) {
+            $config['fullGraphqlData'] = false;
         }
 
         parent::__construct($config);
@@ -557,6 +574,18 @@ class Field extends HtmlField implements ElementContainerFieldInterface, Mergeab
         }
 
         return $rules;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getContentGqlType(): Type|array
+    {
+        if (!$this->fullGraphqlData) {
+            return parent::getContentGqlType();
+        }
+
+        return Generator::generateType($this);
     }
 
     /**

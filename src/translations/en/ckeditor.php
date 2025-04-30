@@ -35,6 +35,7 @@ return [
     'Link to the current site' => 'Link to the current site',
     'No transform' => 'No transform',
     'Purify HTML' => 'Purify HTML',
+    'Raw content only' => 'Raw content only',
     'Removes any potentially-malicious code on save, by running the submitted data through {link}.' => 'Removes any potentially-malicious code on save, by running the submitted data through {link}.',
     'Show word count' => 'Show word count',
     'Site: {name}' => 'Site: {name}',

@@ -57,7 +57,7 @@ class FieldData extends HtmlFieldData implements IteratorAggregate, Countable
         return match ($name) {
             'chunks' => $this->getChunks(),
             'entries' => $this->getEntries(),
-            default => throw new UnknownPropertyException(sprintf('Getting unknown property: %s::%s', static::class, $name)),
+            default => parent::__get($name),
         };
     }
 

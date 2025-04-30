@@ -9,6 +9,7 @@
 namespace craft\ckeditor\data;
 
 use Craft;
+use craft\htmlfield\HtmlFieldData;
 use League\HTMLToMarkdown\HtmlConverter;
 use yii\base\UnknownPropertyException;
 
@@ -59,12 +60,7 @@ class Markup extends BaseChunk
      */
     public function getMarkdown(array $config = []): string
     {
-        $converter = new HtmlConverter([
-            'header_style' => 'atx',
-            'remove_nodes' => 'meta style script',
-            ...$config,
-        ]);
-        return $converter->convert($this->getHtml());
+        return HtmlFieldData::toMarkdown($this->getHtml(), $config);
     }
 
     /**
@@ -75,15 +71,7 @@ class Markup extends BaseChunk
      */
     public function getPlainText(): string
     {
-        $text = $this->getMarkdown([
-            'strip_tags' => true,
-            'strip_placeholder_links' => true,
-            'hard_break' => true,
-        ]);
-
-        // remove heading chars
-        $text = preg_replace('/^#* /m', '', $text);
-
-        return $text;
+        // link href's and images get removed, so no need to run the HTML through parseRefs()
+        return HtmlFieldData::toPlainText($this->rawHtml);
     }
 }

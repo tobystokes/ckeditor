@@ -21,6 +21,7 @@ use craft\gql\base\SingleGeneratorInterface;
 use craft\gql\GqlEntityRegistry;
 use craft\gql\types\generators\EntryType as EntryTypeGenerator;
 use craft\helpers\Gql;
+use craft\htmlfield\HtmlFieldData;
 use GraphQL\Type\Definition\ResolveInfo;
 use GraphQL\Type\Definition\Type;
 
@@ -72,7 +73,7 @@ class Generator implements GeneratorInterface, SingleGeneratorInterface
                     ],
                     'remove_nodes' => [
                         'type' => Type::string(),
-                        'description' => 'Space-separated list of tag names that should be removed (`"meta style script"` by default).',
+                        'description' => sprintf('Space-separated list of tag names that should be removed (`"%s"` by default).', HtmlFieldData::BASE_MARKDOWN_CONFIG['remove_nodes']),
                     ],
                     'hard_break' => [
                         'type' => Type::boolean(),

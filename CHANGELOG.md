@@ -1,6 +1,6 @@
 # Release Notes for CKEditor for Craft CMS
 
-## Unreleased
+## 4.8.0 - 2025-04-30
 
 - Added the “Field Limit” field setting, which can be set to a character limit or word limit. ([#384](https://github.com/craftcms/ckeditor/pull/384))
 - Added the “GraphQL Mode” field setting. ([#403](https://github.com/craftcms/ckeditor/pull/403))

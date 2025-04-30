@@ -22,6 +22,7 @@ class CkeditorMarkup extends ObjectType
     protected function resolve(mixed $source, array $arguments, mixed $context, ResolveInfo $resolveInfo): mixed
     {
         /** @var Markup $source */
+        /** @phpstan-ignore-next-line */
         return match ($resolveInfo->fieldName) {
             'html' => $source->getHtml(),
             'rawHtml' => $source->rawHtml,

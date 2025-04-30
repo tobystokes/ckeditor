@@ -24,6 +24,7 @@ class CkeditorData extends ObjectType
     {
         /** @var FieldData $source */
         $fieldName = $resolveInfo->fieldName;
+        /** @phpstan-ignore-next-line */
         return match ($fieldName) {
             'html' => $source->getParsedContent(),
             'rawHtml' => $source->getRawContent(),

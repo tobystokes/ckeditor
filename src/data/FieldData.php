@@ -185,7 +185,7 @@ class FieldData extends HtmlFieldData implements IteratorAggregate, Countable
         }
 
         $entryChunks = $this->chunks->filter(fn(BaseChunk $chunk) => $chunk instanceof Entry);
-        if (!empty($entryChunks)) {
+        if ($entryChunks->isNotEmpty()) {
             $entries = $this->getEntries()->indexBy('id')->all();
             $entryChunks->each(function(Entry $chunk) use ($entries) {
                 $chunk->setEntry($entries[$chunk->entryId] ?? null);

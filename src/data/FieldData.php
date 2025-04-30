@@ -11,6 +11,7 @@ namespace craft\ckeditor\data;
 use ArrayIterator;
 use Countable;
 use Craft;
+use craft\elements\db\EntryQuery;
 use craft\elements\Entry as EntryElement;
 use craft\helpers\Html;
 use craft\htmlfield\HtmlFieldData;
@@ -18,6 +19,7 @@ use Illuminate\Support\Collection;
 use IteratorAggregate;
 use Traversable;
 use Twig\Markup as TwigMarkup;
+use yii\base\UnknownPropertyException;
 
 /**
  * Stores the data for CKEditor fields.
@@ -48,6 +50,15 @@ class FieldData extends HtmlFieldData implements IteratorAggregate, Countable
     {
         $this->render();
         return parent::__toString();
+    }
+
+    public function __get(string $name)
+    {
+        return match ($name) {
+            'chunks' => $this->getChunks(),
+            'entries' => $this->getEntries(),
+            default => throw new UnknownPropertyException(sprintf('Getting unknown property: %s::%s', static::class, $name)),
+        };
     }
 
     public function getIterator(): Traversable
@@ -135,38 +146,51 @@ class FieldData extends HtmlFieldData implements IteratorAggregate, Countable
         }
     }
 
+    /**
+     * Returns an entry query prepped to fetch the nested entries.
+     *
+     * @return EntryQuery
+     * @since 4.8.0
+     */
+    public function getEntries(): EntryQuery
+    {
+        $this->parse();
+        $entryChunks = $this->chunks->filter(fn(BaseChunk $chunk) => $chunk instanceof Entry);
+        $entryIds = $entryChunks->map(fn(Entry $chunk) => $chunk->entryId)->all();
+        $query = EntryElement::find();
+
+        if (!empty($entryIds)) {
+            $query
+                ->id($entryIds)
+                ->siteId($this->siteId)
+                ->status(null)
+                ->drafts(null)
+                ->revisions(null)
+                ->trashed(null);
+
+            if (Craft::$app->getRequest()->getIsPreview()) {
+                $query->withProvisionalDrafts();
+            }
+        } else {
+            $query->id(false);
+        }
+
+        return $query;
+    }
+
     public function loadEntries(): void
     {
         if ($this->loadedEntries) {
             return;
         }
 
-        $this->parse();
         $entryChunks = $this->chunks->filter(fn(BaseChunk $chunk) => $chunk instanceof Entry);
-        $entryIds = $entryChunks->map(fn(Entry $chunk) => $chunk->entryId)->all();
-
-        if (!empty($entryIds)) {
-            $query = EntryElement::find()
-                ->id($entryIds)
-                ->siteId($this->siteId)
-                ->status(null)
-                ->drafts(null)
-                ->revisions(null)
-                ->trashed(null)
-                ->indexBy('id');
-
-            if (Craft::$app->getRequest()->getIsPreview()) {
-                $query->withProvisionalDrafts();
-            }
-
-            $entries = $query->all();
-        } else {
-            $entries = [];
+        if (!empty($entryChunks)) {
+            $entries = $this->getEntries()->indexBy('id')->all();
+            $entryChunks->each(function(Entry $chunk) use ($entries) {
+                $chunk->setEntry($entries[$chunk->entryId] ?? null);
+            });
         }
-
-        $entryChunks->each(function(Entry $chunk) use ($entries) {
-            $chunk->setEntry($entries[$chunk->entryId] ?? null);
-        });
 
         $this->loadedEntries = true;
     }

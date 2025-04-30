@@ -96,8 +96,4 @@ export default class CraftEntryTypesButtonView extends View {
       children: buttons,
     });
   }
-
-  render() {
-    super.render();
-  }
 }

@@ -190,7 +190,7 @@ CKEditor 5 stores references to embedded media embeds using `oembed` tags. Craft
 }
 ```
 
-See CKEditor’s [media embed documentation](https://ckeditor.com/docs/ckeditor5/latest/features/media-embed.html#displaying-embedded-media-on-your-website) for examples of how to show the embedded media on your front end.
+To automatically replace `oembed` tags with the media provider’s embed HTML, enable the field’s “Parse embeds” setting. Alternatively, see CKEditor’s [media embed documentation](https://ckeditor.com/docs/ckeditor5/latest/features/media-embed.html#displaying-embedded-media-on-your-website) for examples of how to show the embedded media on your front end.
 
 ## Longform Content with Nested Entries
 

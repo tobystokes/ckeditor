@@ -400,6 +400,12 @@ class Field extends HtmlField implements ElementContainerFieldInterface, Mergeab
     public bool $showWordCount = false;
 
     /**
+     * @var bool Whether `<oembed>` tags should be parsed and replaced with the provider’s embed code.
+     * @since 4.9.0
+     */
+    public bool $parseEmbeds = false;
+
+    /**
      * @var string|array|null The volumes that should be available for image selection.
      * @since 1.2.0
      */
@@ -928,7 +934,7 @@ class Field extends HtmlField implements ElementContainerFieldInterface, Mergeab
      */
     protected function createFieldData(string $content, ?int $siteId): HtmlFieldData
     {
-        return new FieldData($content, $siteId);
+        return new FieldData($content, $siteId, $this);
     }
 
     /**

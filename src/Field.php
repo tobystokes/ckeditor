@@ -436,17 +436,17 @@ class Field extends HtmlField implements ElementContainerFieldInterface, Mergeab
     public bool $showUnpermittedFiles = false;
 
     /**
+     * @var bool Whether GraphQL values should be returned as objects with `content`, `chunks`, etc., sub-fields.
+     * @since 4.8.0
+     */
+    public bool $fullGraphqlData = true;
+
+    /**
      * @var string|null The “New entry” button label.
      * @since 4.0.0
      * @deprecated in 4.8.0
      */
     public ?string $createButtonLabel = null;
-
-    /**
-     * @var bool Whether GraphQL values should be returned as objects with `content`, `chunks`, etc., sub-fields.
-     * @since 4.8.0
-     */
-    public bool $fullGraphqlData = true;
 
     /**
      * @var EntryType[] The field’s available entry types

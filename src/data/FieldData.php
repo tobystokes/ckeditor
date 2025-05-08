@@ -21,7 +21,6 @@ use Embed\Embed;
 use Embed\Extractor;
 use Embed\Http\Crawler;
 use GuzzleHttp\Exception\GuzzleException;
-use GuzzleHttp\RequestOptions;
 use Illuminate\Support\Collection;
 use IteratorAggregate;
 use Traversable;

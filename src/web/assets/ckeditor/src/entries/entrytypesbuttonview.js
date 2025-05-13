@@ -40,7 +40,7 @@ export default class CraftEntryTypesButtonView extends View {
             label: item.model.label,
             icon: item.model.icon,
             withText: false,
-            tooltip: Craft.t('app', 'New {type}', {
+            tooltip: Craft.t('ckeditor', 'New {entrytype}', {
               type: item.model.label,
             }),
             class: classes.join(' '),

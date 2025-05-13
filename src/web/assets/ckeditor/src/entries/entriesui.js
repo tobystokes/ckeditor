@@ -136,7 +136,10 @@ export default class CraftEntriesUI extends Plugin {
     addListToDropdown(
       dropdownView,
       () =>
-        this._getEntryTypeButtonsCollection(entryTypeOptions, insertEntryCommand),
+        this._getEntryTypeButtonsCollection(
+          entryTypeOptions,
+          insertEntryCommand,
+        ),
       {
         ariaLabel: Craft.t('ckeditor', 'Entry types list'),
       },
@@ -166,7 +169,9 @@ export default class CraftEntriesUI extends Plugin {
     const expandEntryButtons = editor.config.get('expandEntryButtons');
 
     if (expandEntryButtons) {
-      this.editor.ui.componentFactory.add('createEntry', (locale) =>
+      this.editor.ui.componentFactory.add(
+        'createEntry',
+        (locale) =>
           new CraftEntryTypesButtonView(locale, {
             entriesUi: this,
             entryTypeOptions: entryTypeOptions,
@@ -174,7 +179,7 @@ export default class CraftEntriesUI extends Plugin {
       );
     } else {
       this.editor.ui.componentFactory.add('createEntry', (locale) => {
-          return this._createSingleToolbarEntriesButton(locale);
+        return this._createSingleToolbarEntriesButton(locale);
       });
     }
   }

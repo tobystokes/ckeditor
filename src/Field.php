@@ -450,9 +450,14 @@ class Field extends HtmlField implements ElementContainerFieldInterface, Mergeab
     /**
      * @var string|null The “New entry” button label.
      * @since 4.0.0
-     * @deprecated in 4.8.0
      */
     public ?string $createButtonLabel = null;
+
+    /**
+     * @var bool Whether the entry types that have icons should be shown as separate buttons in the toolbar.
+     * @since 4.9.0
+     */
+    public bool $expandEntryButtons = false;
 
     /**
      * @var EntryType[] The field’s available entry types
@@ -600,7 +605,7 @@ class Field extends HtmlField implements ElementContainerFieldInterface, Mergeab
      */
     public function settingsAttributes(): array
     {
-        $attributes = ArrayHelper::without(parent::settingsAttributes(), 'createButtonLabel');
+        $attributes = parent::settingsAttributes();
         $attributes[] = 'entryTypes';
         return $attributes;
     }
@@ -741,6 +746,7 @@ class Field extends HtmlField implements ElementContainerFieldInterface, Mergeab
                     'value' => null,
                 ],
             ], $transformOptions),
+            'defaultCreateButtonLabel' => $this->defaultCreateButtonLabel(),
         ]);
     }
 
@@ -978,6 +984,8 @@ class Field extends HtmlField implements ElementContainerFieldInterface, Mergeab
             'accessibleFieldName' => $this->_accessibleFieldName($element),
             'describedBy' => $this->_describedBy($view),
             'entryTypeOptions' => $this->_getEntryTypeOptions(),
+            'expandEntryButtons' => $this->expandEntryButtons,
+            'createButtonLabel' => $this->createButtonLabel(),
             'findAndReplace' => [
                 'uiType' => 'dropdown',
             ],
@@ -1356,16 +1364,23 @@ JS,
         return $entryTypeOptions;
     }
 
-    /**
-     * Fill entry card CKE markup (<craft-entry data-entry-id="96"></craft-entry>)
-     * with actual card HTML of the entry it's linking to
+    private function createButtonLabel(): string
+    {
+        if (isset($this->createButtonLabel)) {
+            return Craft::t('site', $this->createButtonLabel);
+        }
+        return $this->defaultCreateButtonLabel();
+    }
 
-     * Replace the entry card CKE markup (<craft-entry data-entry-id="96"></craft-entry>)
-     * with actual card HTML of the entry it's linking to
-
-     * Replace the entry card CKE markup (<craft-entry data-entry-id="96"></craft-entry>)
-     * with the rendered HTML of the entry it's linking to
-     */
+    private function defaultCreateButtonLabel(): string
+    {
+        if (!$this->expandEntryButtons) {
+            return Craft::t('app', 'New {type}', [
+                'type' => Entry::lowerDisplayName(),
+            ]);
+        }
+        return Craft::t('ckeditor', 'Add nested content');
+    }
 
     /**
      * Normalizes <figure> tags, ensuring they have an `image` or `media` class depending on their contents,

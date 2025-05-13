@@ -107,7 +107,51 @@ export default class CraftEntriesUI extends Plugin {
   }
 
   /**
-   * Creates toolbar buttons that allow for an entry of given type to be inserted into the editor
+   * Creates a single toolbar button that allows for an entry to be inserted into the editor
+   *
+   * @param locale
+   * @private
+   */
+  _createSingleToolbarEntriesButton(locale) {
+    const editor = this.editor;
+    const entryTypeOptions = editor.config.get('entryTypeOptions');
+    const insertEntryCommand = editor.commands.get('insertEntry');
+
+    if (!entryTypeOptions || !entryTypeOptions.length) {
+      return;
+    }
+
+    const dropdownView = createDropdown(locale);
+    dropdownView.buttonView.set({
+      label:
+        editor.config.get('createButtonLabel') ||
+        Craft.t('app', 'New {type}', {
+          type: Craft.t('app', 'entry'),
+        }),
+      tooltip: true,
+      withText: true,
+    });
+
+    dropdownView.bind('isEnabled').to(insertEntryCommand);
+    addListToDropdown(
+      dropdownView,
+      () =>
+        this._getEntryTypeButtonsCollection(entryTypeOptions, insertEntryCommand),
+      {
+        ariaLabel: Craft.t('ckeditor', 'Entry types list'),
+      },
+    );
+    // Execute command when an item from the dropdown is selected.
+    this.listenTo(dropdownView, 'execute', (evt) => {
+      this._showCreateEntrySlideout(evt.source.commandValue);
+    });
+
+    return dropdownView;
+  }
+
+  /**
+   * Creates toolbar buttons that allow for an entry of given type to be inserted into the editor.
+   * If the entry type has an icon, it'll get its own button. Entry types without an icon are grouped in a dropdown.
    *
    * @private
    */
@@ -119,14 +163,20 @@ export default class CraftEntriesUI extends Plugin {
       return;
     }
 
-    this.editor.ui.componentFactory.add(
-      'createEntry',
-      (locale) =>
-        new CraftEntryTypesButtonView(locale, {
-          entriesUi: this,
-          entryTypeOptions: entryTypeOptions,
-        }),
-    );
+    const expandEntryButtons = editor.config.get('expandEntryButtons');
+
+    if (expandEntryButtons) {
+      this.editor.ui.componentFactory.add('createEntry', (locale) =>
+          new CraftEntryTypesButtonView(locale, {
+            entriesUi: this,
+            entryTypeOptions: entryTypeOptions,
+          }),
+      );
+    } else {
+      this.editor.ui.componentFactory.add('createEntry', (locale) => {
+          return this._createSingleToolbarEntriesButton(locale);
+      });
+    }
   }
 
   /**

@@ -20,9 +20,9 @@ use craft\htmlfield\HtmlFieldData;
 use Embed\Embed;
 use Embed\Extractor;
 use Embed\Http\Crawler;
-use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Support\Collection;
 use IteratorAggregate;
+use Throwable;
 use Traversable;
 use Twig\Markup as TwigMarkup;
 
@@ -184,7 +184,7 @@ class FieldData extends HtmlFieldData implements IteratorAggregate, Countable
             $infos = $embed->getMulti(...$urls);
             $html = array_map(fn(Extractor $info) => $info->code->html, $infos);
             return str_replace(array_keys($urls), $html, $content);
-        } catch (GuzzleException $e) {
+        } catch (Throwable $e) {
             Craft::$app->getErrorHandler()->logException($e);
             return $content;
         }

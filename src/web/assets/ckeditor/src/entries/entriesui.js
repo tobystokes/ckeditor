@@ -123,11 +123,7 @@ export default class CraftEntriesUI extends Plugin {
 
     const dropdownView = createDropdown(locale);
     dropdownView.buttonView.set({
-      label:
-        editor.config.get('createButtonLabel') ||
-        Craft.t('app', 'New {type}', {
-          type: Craft.t('app', 'entry'),
-        }),
+      label: Craft.t('ckeditor', 'Add nested content'),
       tooltip: true,
       withText: true,
     });

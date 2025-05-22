@@ -450,6 +450,7 @@ class Field extends HtmlField implements ElementContainerFieldInterface, Mergeab
     /**
      * @var string|null The “New entry” button label.
      * @since 4.0.0
+     * @deprecated in 4.8.0
      */
     public ?string $createButtonLabel = null;
 
@@ -605,7 +606,7 @@ class Field extends HtmlField implements ElementContainerFieldInterface, Mergeab
      */
     public function settingsAttributes(): array
     {
-        $attributes = parent::settingsAttributes();
+        $attributes = ArrayHelper::without(parent::settingsAttributes(), 'createButtonLabel');
         $attributes[] = 'entryTypes';
         return $attributes;
     }
@@ -746,7 +747,6 @@ class Field extends HtmlField implements ElementContainerFieldInterface, Mergeab
                     'value' => null,
                 ],
             ], $transformOptions),
-            'defaultCreateButtonLabel' => $this->defaultCreateButtonLabel(),
         ]);
     }
 
@@ -985,7 +985,6 @@ class Field extends HtmlField implements ElementContainerFieldInterface, Mergeab
             'describedBy' => $this->_describedBy($view),
             'entryTypeOptions' => $this->_getEntryTypeOptions(),
             'expandEntryButtons' => $this->expandEntryButtons,
-            'createButtonLabel' => $this->createButtonLabel(),
             'findAndReplace' => [
                 'uiType' => 'dropdown',
             ],
@@ -1362,24 +1361,6 @@ JS,
         );
 
         return $entryTypeOptions;
-    }
-
-    private function createButtonLabel(): string
-    {
-        if (isset($this->createButtonLabel)) {
-            return Craft::t('site', $this->createButtonLabel);
-        }
-        return $this->defaultCreateButtonLabel();
-    }
-
-    private function defaultCreateButtonLabel(): string
-    {
-        if (!$this->expandEntryButtons) {
-            return Craft::t('app', 'New {type}', [
-                'type' => Entry::lowerDisplayName(),
-            ]);
-        }
-        return Craft::t('ckeditor', 'Add nested content');
     }
 
     /**

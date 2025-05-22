@@ -3,6 +3,7 @@
 ## Unreleased
 
 - Added the “Parse embeds” field setting. ([#409](https://github.com/craftcms/ckeditor/pull/409))
+- Fixed an error that occurred when copy/pasting a nested entry from a top-level element’s CKEditor field into a nested element’s CKEditor field. ([#408](https://github.com/craftcms/ckeditor/issues/408))
 
 ## 4.8.0 - 2025-04-30
 

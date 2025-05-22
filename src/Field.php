@@ -454,7 +454,7 @@ class Field extends HtmlField implements ElementContainerFieldInterface, Mergeab
     public ?string $createButtonLabel = null;
 
     /**
-     * @var bool Whether the entry types that have icons should be shown as separate buttons in the toolbar.
+     * @var bool Whether entry types with icons should be shown as separate buttons in the toolbar.
      * @since 4.9.0
      */
     public bool $expandEntryButtons = false;

@@ -209,13 +209,16 @@ To configure a CKEditor field to manage nested entries, follow these steps:
 
 1. Go to **Settings** → **Fields** and click on your CKEditor field’s name (or create a new one).
 2. Double-click on the selected CKEditor config to open its settings.
-3. Drag the “New entry” menu button into the toolbar, and save the CKEditor config.
+3. Drag the “+” menu button into the toolbar, and save the CKEditor config.
 4. Back on the field’s settings, select one or more entry types which should be available within CKEditor fields.
 5. Save the field’s settings.
 
-Now the field is set up to manage nested entries! The next time you edit an element with that CKEditor field, the “New entry” menu button will be shown in the toolbar, and when you choose an entry type from it, a slideout will open where you can enter content for the nested entry.
+Now the field is set up to manage nested entries! The next time you edit an element with that CKEditor field, the “+” button will be shown in the toolbar, and when you choose an entry type from its menu, a slideout will open where you can enter content for the nested entry.
 
 An entry card will appear within the rich text content after you press **Save** within the slideout. The card can be moved via drag-n-drop or cut/paste from there.
+
+> [!TIP]
+> Enable the “Show toolbar buttons for entry types with icons” field setting to replace the “+” button with individual toolbar buttons for each selected entry type which has an icon.
 
 You can also copy/paste the card to duplicate the nested entry.
 

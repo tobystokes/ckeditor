@@ -33,7 +33,6 @@ return [
     'Link to an asset' => 'Link to an asset',
     'Link to an entry' => 'Link to an entry',
     'Link to the current site' => 'Link to the current site',
-    'New {entrytype}' => 'New {entrytype}',
     'New {type}' => 'New {type}',
     'No transform' => 'No transform',
     'Purify HTML' => 'Purify HTML',

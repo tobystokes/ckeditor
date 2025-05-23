@@ -455,6 +455,12 @@ class Field extends HtmlField implements ElementContainerFieldInterface, Mergeab
     public ?string $createButtonLabel = null;
 
     /**
+     * @var bool Whether entry types with icons should be shown as separate buttons in the toolbar.
+     * @since 4.9.0
+     */
+    public bool $expandEntryButtons = false;
+
+    /**
      * @var EntryType[] The field’s available entry types
      * @see getEntryTypes()
      * @see setEntryTypes()
@@ -978,6 +984,7 @@ class Field extends HtmlField implements ElementContainerFieldInterface, Mergeab
             'accessibleFieldName' => $this->_accessibleFieldName($element),
             'describedBy' => $this->_describedBy($view),
             'entryTypeOptions' => $this->_getEntryTypeOptions(),
+            'expandEntryButtons' => $this->expandEntryButtons,
             'findAndReplace' => [
                 'uiType' => 'dropdown',
             ],
@@ -1355,17 +1362,6 @@ JS,
 
         return $entryTypeOptions;
     }
-
-    /**
-     * Fill entry card CKE markup (<craft-entry data-entry-id="96"></craft-entry>)
-     * with actual card HTML of the entry it's linking to
-
-     * Replace the entry card CKE markup (<craft-entry data-entry-id="96"></craft-entry>)
-     * with actual card HTML of the entry it's linking to
-
-     * Replace the entry card CKE markup (<craft-entry data-entry-id="96"></craft-entry>)
-     * with the rendered HTML of the entry it's linking to
-     */
 
     /**
      * Normalizes <figure> tags, ensuring they have an `image` or `media` class depending on their contents,

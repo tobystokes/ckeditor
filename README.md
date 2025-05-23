@@ -192,6 +192,9 @@ CKEditor 5 stores references to embedded media embeds using `oembed` tags. Craft
 
 To automatically replace `oembed` tags with the media provider’s embed HTML, enable the field’s “Parse embeds” setting. Alternatively, see CKEditor’s [media embed documentation](https://ckeditor.com/docs/ckeditor5/latest/features/media-embed.html#displaying-embedded-media-on-your-website) for examples of how to show the embedded media on your front end.
 
+> [!NOTE]
+> Be sure to cache your front-end output if you enable the “Parse embeds” setting (e.g. by using a `{% cache %}` tag). Otherwise, there will be a slight performance hit on each request while CKEditor fetches the embed HTML from the provider.
+
 ## Longform Content with Nested Entries
 
 CKEditor fields can be configured to manage nested entries, which will be displayed as [cards](https://craftcms.com/docs/5.x/system/elements.html#chips-cards) within your rich text content, and edited via [slideouts](https://craftcms.com/docs/5.x/system/control-panel.html#slideouts).

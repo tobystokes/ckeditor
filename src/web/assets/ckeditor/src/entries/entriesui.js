@@ -7,6 +7,7 @@ import {
 } from 'ckeditor5/src/ui';
 import {Range} from 'ckeditor5/src/engine';
 import {Collection} from 'ckeditor5/src/utils';
+import {IconPlus} from 'ckeditor5/src/icons';
 import {isWidget, WidgetToolbarRepository} from 'ckeditor5/src/widget';
 import {DoubleClickObserver} from '../observers/domevent';
 import CraftEntryTypesButtonView from './entrytypesbuttonview.js';
@@ -124,8 +125,9 @@ export default class CraftEntriesUI extends Plugin {
     const dropdownView = createDropdown(locale);
     dropdownView.buttonView.set({
       label: Craft.t('ckeditor', 'Add nested content'),
+      icon: IconPlus,
       tooltip: true,
-      withText: true,
+      withText: false,
     });
 
     dropdownView.bind('isEnabled').to(insertEntryCommand);

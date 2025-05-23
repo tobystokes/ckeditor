@@ -1,6 +1,6 @@
 # Release Notes for CKEditor for Craft CMS
 
-## Unreleased
+## 4.9.0 - 2025-05-23
 
 - Added the “Parse embeds” field setting. ([#409](https://github.com/craftcms/ckeditor/pull/409))
 - Added the “Show toolbar buttons for entry types with icons” field settings. ([#413](https://github.com/craftcms/ckeditor/pull/413))

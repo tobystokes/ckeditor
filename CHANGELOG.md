@@ -5,6 +5,7 @@
 - Added the “Parse embeds” field setting. ([#409](https://github.com/craftcms/ckeditor/pull/409))
 - Added the “Show toolbar buttons for entry types with icons” field settings. ([#413](https://github.com/craftcms/ckeditor/pull/413))
 - Fixed an error that occurred when copy/pasting a nested entry from a top-level element’s CKEditor field into a nested element’s CKEditor field. ([#408](https://github.com/craftcms/ckeditor/issues/408))
+- Fixed an error that could occur when generating a GraphQL introspection schema, if a CKEditor field’s GraphQL Mode setting was set to “Full data”. ([#414](https://github.com/craftcms/ckeditor/issues/414))  
 
 ## 4.8.0 - 2025-04-30
 

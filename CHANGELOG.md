@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+
+- Fixed a bug where the CKEditor toolbar overflow menu could be cut off within Live Preview. ([#417](https://github.com/craftcms/ckeditor/issues/417))
 - Fixed a bug where new paragraphs were getting inserted automatically after newly-added nested entries. ([#416](https://github.com/craftcms/ckeditor/issues/416))
 
 ## 4.9.0 - 2025-05-23

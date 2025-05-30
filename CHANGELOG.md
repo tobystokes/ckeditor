@@ -1,5 +1,9 @@
 # Release Notes for CKEditor for Craft CMS
 
+## Unreleased
+
+- Fixed a bug where new paragraphs were getting inserted automatically after newly-added nested entries. ([#416](https://github.com/craftcms/ckeditor/issues/416))
+
 ## 4.9.0 - 2025-05-23
 
 - Added the “Parse embeds” field setting. ([#409](https://github.com/craftcms/ckeditor/pull/409))
